@@ -8,7 +8,7 @@ $ nano .env &lt;br&gt;
 [---------Редактируем содержимое----------]
 DB_DATABASE=fizika
 DB_USERNAME=root
-DB_PASSWORD=&amp;lt;пароль от вашей БД&amp;gt; // Как настроить пользователя mysql гуглим.
+DB_PASSWORD=<пароль от вашей БД></пароль> // Как настроить пользователя mysql гуглим.
 </code></pre>
 <p class="has-line-data" data-line-start="15" data-line-end="16">3] Генерируем ключ и создаем символьную ссылку на хранилище в папку /public :</p>
 <pre><code>$ php artisan key:generate
