@@ -44,6 +44,43 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+//    // генерирует новую картинку по инициалам пользователя
+//    public function generateNewImage($str) {
+//        // извлечём первые две буквы
+//        $tmpArr = explode($str);
+//        if (count($tmpArr)>=2) {
+//            $letterA = $tmpArr[0][0];
+//            $letterB = $tmpArr[1][0];
+//        }
+//        else {
+//            $letterA = $str[0];
+//            $letterB = $str[1];
+//        }
+//
+//        /// заисмствованный код:
+//         $hex = [
+//          '#F29B34',
+//          '#A19C69',
+//          '#3C3741',
+//          '#25373D',
+//          '#EB9532',
+//          '#60646D'
+//        ];
+//
+//        $avatar_example = str_replace('USERNAME', $letters, $avatar_example);
+//        $avatar_example = str_replace('HEX_COLOR', $hex[array_rand($hex, 1)], $avatar_example);
+//
+//        $gen_avatar = md5($letters).'.svg';
+//
+//        file_put_contents($dir.'/'.$gen_avatar, $avatar_example);
+//
+//        echo '
+//            <h1>{$firstname} {$lastname}</h1>
+//            <br>
+//            <img src="uploads/{$gen_avatar}" />
+//        ';
+//
+//    }
     public function register(Request $request) {
         // запишем в сессию, чтобы было автозаполнение
         // чтобы например, при вводе неправильного пароля после перезагрузки страницы не пришлось заполнять все поля заново
@@ -70,6 +107,7 @@ class RegisterController extends Controller
         if ($request->password !== $request->password_confirmation) {
             return back()->with('err_register', 'Пароли не совпадают');
         }
+
 
         $userArray = [
             'name' => $request->name,
