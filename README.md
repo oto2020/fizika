@@ -1,33 +1,52 @@
-Токен на клонирование ckeditor в laravel/storage/: git remote add origin 008134684038f0445bc8a0fa6af6452909fbfff2@github.com:igo4ek/ckeditor.git
+<p>Токен на клонирование ckeditor в laravel/storage/: git remote add origin 008134684038f0445bc8a0fa6af6452909fbfff2@github.com:igo4ek/ckeditor.git</p>
 
-Локальный сервер выбираем сами, настройкой mysql занимаемся сами.
 
-Клонировать себе содержимое:
-$ git clone https://<token>@github.com/igo4ek/laravel.git
-[токен запрашивается у владельца репозитория. владелец генерирует токен тут: https://github.com/settings/tokens/]
+<p data-line-end="1" data-line-start="0">Локальный сервер выбираем сами, настройкой mysql занимаемся сами.</p>
 
-Зайти в папку с проектом, копируем и настраиваем конфиг .env:
-$ cd laravel; cp .env.example .env; nano .env
+<ol>
+	<li data-line-end="6" data-line-start="2">
+	<p data-line-end="5" data-line-start="2">Клонировать себе содержимое:<br />
+	$ git clone&nbsp;<a href="https://%3Ctoken%3E@github.com/igo4ek/laravel.git">https://&lt;token&gt;@github.com/igo4ek/laravel.git</a><br />
+	[токен запрашивается у владельца репозитория. владелец генерирует токен тут:&nbsp;<a href="https://github.com/settings/tokens/">https://github.com/settings/tokens/</a>]</p>
+	</li>
+	<li data-line-end="8" data-line-start="6">
+	<p data-line-end="8" data-line-start="6">Зайти в папку с проектом, копируем и настраиваем конфиг .env:<br />
+	$ cd laravel; cp .env.example .env; nano .env</p>
+	</li>
+</ol>
 
-DB_DATABASE=fizika
+<hr />
+<pre>
+<code>DB_DATABASE=fizika
 DB_USERNAME=root
-DB_PASSWORD=<пароль от вашей БД> // Как настроить пользователя mysql гуглим.
-Генерить ключ и создать ссылку на хранилище:
-$ php artisan key:generate; php artisan storage:link
+DB_PASSWORD=&lt;пароль от вашей БД&gt; // Как настроить пользователя mysql гуглим.
+</code></pre>
 
-Указать серверу папку laravel/public.
-[тут уж в зависимости от самого сервера]
+<ol start="2">
+	<li data-line-end="16" data-line-start="13">
+	<p data-line-end="15" data-line-start="13">Генерить ключ и создать ссылку на хранилище:<br />
+	$ php artisan key:generate; php artisan storage:link</p>
+	</li>
+	<li data-line-end="19" data-line-start="16">
+	<p data-line-end="18" data-line-start="16">Указать серверу папку laravel/public.<br />
+	[тут уж в зависимости от самого сервера]</p>
+	</li>
+	<li data-line-end="22" data-line-start="19">
+	<p data-line-end="21" data-line-start="19">Импорт БД fizika.sql через adminer или php-my-admin.<br />
+	[или создайте свою таблицу &lsquo;fizika&rsquo;]</p>
+	</li>
+	<li data-line-end="25" data-line-start="22">
+	<p data-line-end="24" data-line-start="22">Если ОС==Windows: в настройках IDE указываем путь к git.exe:<br />
+	[например: C:\Program Files\Git\cmd\git.exe]</p>
+	</li>
+	<li data-line-end="29" data-line-start="25">
+	<p data-line-end="28" data-line-start="25">VCS-&gt;Git-&gt;Pull. Тут предложат добавить remote репозиторий, применяем этот:<br />
+	<a href="https://%3Ctoken%3E@github.com/igo4ek/laravel.git">https://&lt;token&gt;@github.com/igo4ek/laravel.git</a><br />
+	[токен запрашивается у владельца репозитория. владелец генерирует токен тут:&nbsp;<a href="https://github.com/settings/tokens/">https://github.com/settings/tokens/</a>]</p>
+	</li>
+	<li data-line-end="31" data-line-start="29">
+	<p data-line-end="30" data-line-start="29">Заходим в localhost &ndash; сайт должен работать на локальном сервере. Логинимся, проверяем.</p>
+	</li>
+</ol>
 
-Импорт БД fizika.sql через adminer или php-my-admin.
-[или создайте свою таблицу ‘fizika’]
-
-Если ОС==Windows: в настройках IDE указываем путь к git.exe:
-[например: C:\Program Files\Git\cmd\git.exe]
-
-VCS->Git->Pull. Тут предложат добавить remote репозиторий, применяем этот:
-https://<token>@github.com/igo4ek/laravel.git
-[токен запрашивается у владельца репозитория. владелец генерирует токен тут: https://github.com/settings/tokens/]
-
-Заходим в localhost – сайт должен работать на локальном сервере. Логинимся, проверяем.
-
-// TODO: добавить сюда fizika.sql, в которую будет вшита пробная учетная запись администратора для демонстрации всех возможностей сайта.
+<p data-line-end="32" data-line-start="31">// TODO: добавить сюда fizika.sql, в которую будет вшита пробная учетная запись администратора для демонстрации всех возможностей сайта.</p>
