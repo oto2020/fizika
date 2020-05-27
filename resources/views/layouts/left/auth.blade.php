@@ -28,7 +28,7 @@
     @else
         <hr>
         <h5>{{$user->name}}</h5>
-        <img src="https://ui-avatars.com/api/?size=190&name=Конюхова+Антонина&font-size=0.45&background=1967c3&color=fff&rounded=false" class="center-block">
+        <img src="https://ui-avatars.com/api/?size=190&name=Конюхова+Антонина&font-size=0.45&background=40E0D0&color=fff&rounded=false" class="center-block">
         <div class="liteTooltip" >
             <h6>{{$role->name}}</h6>
         </div>
