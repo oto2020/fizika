@@ -1,26 +1,29 @@
-<p>Токен на клонирование ckeditor в laravel/storage/: git remote add origin 008134684038f0445bc8a0fa6af6452909fbfff2@github.com:igo4ek/ckeditor.git</p>
-
 
 <p data-line-end="1" data-line-start="0">Локальный сервер выбираем сами, настройкой mysql занимаемся сами.</p>
 
 <ol>
 	<li data-line-end="6" data-line-start="2">
 	<p data-line-end="5" data-line-start="2">Клонировать себе содержимое:<br />
-	$ git clone&nbsp;<a href="https://%3Ctoken%3E@github.com/igo4ek/laravel.git">https://&lt;token&gt;@github.com/igo4ek/laravel.git</a><br />
-	[токен запрашивается у владельца репозитория. владелец генерирует токен тут:&nbsp;<a href="https://github.com/settings/tokens/">https://github.com/settings/tokens/</a>]</p>
+	$ git clone&nbsp;<a href="https://github.com/oto2020/fizika.git">https://github.com/oto2020/fizika.git</a><br />
 	</li>
 	<li data-line-end="8" data-line-start="6">
-	<p data-line-end="8" data-line-start="6">Зайти в папку с проектом, копируем и настраиваем конфиг .env:<br />
-	$ cd laravel; cp .env.example .env; nano .env</p>
+	<p data-line-end="8" data-line-start="6">Зайти в папку с проектом, настроить конфигурауионный файл laravel .env:<br />
+	<pre>
+        <code>
+            $ cd laravel 
+            $ cp .env.example .env 
+            $ nano .env <br>
+            -------------------
+            DB_DATABASE=fizika
+            DB_USERNAME=root
+            DB_PASSWORD=&lt;пароль от вашей БД&gt; // Как настроить пользователя mysql гуглим.
+        </code>
+	</pre>
 	</li>
 </ol>
 
 <hr />
-<pre>
-<code>DB_DATABASE=fizika
-DB_USERNAME=root
-DB_PASSWORD=&lt;пароль от вашей БД&gt; // Как настроить пользователя mysql гуглим.
-</code></pre>
+
 
 <ol start="2">
 	<li data-line-end="16" data-line-start="13">
