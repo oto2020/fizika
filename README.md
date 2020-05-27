@@ -18,7 +18,7 @@ $ php artisan storage:link
 <pre><code>корень_проекта/public
 </code></pre>
 <p class="has-line-data" data-line-start="24" data-line-end="25">5] Создаём пустую БД mysql с именем “fizika”, производим импорт БД через adminer из файла fizika.sql (файл предоставляется отдельно.)</p>
-<pre><code>www/localhost/adminer-mysql-la-la-la.php
+<pre><code>www localhost/adminer-mysql-la-la-la.php
 </code></pre>
 <p class="has-line-data" data-line-start="28" data-line-end="29">6] Распаковываем архив ckeditor.7z, чтобы получилась папка ckeditor.</p>
 <pre><code>$ cd корень_проекта/storage/app/public
