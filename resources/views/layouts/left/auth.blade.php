@@ -28,9 +28,27 @@
     @else
         <hr>
         <h5>{{$user->name}}</h5>
-        <img src="https://ui-avatars.com/api/?size=190&name=Конюхова+Антонина&font-size=0.45&background=40E0D0&color=fff&rounded=false" class="center-block">
+{{--    машины:--}}
+{{--        <img src="https://ui-avatars.com/api/?size=190&name=Конюхова+Антонина&font-size=0.45&background=40E0D0&color=fff&rounded=false" class="center-block">--}}
+{{--        <img src="https://ui-avatars.com/api/?size=190&name=Конюхова+Антонина&font-size=0.45&background=90ee90&color=fff&rounded=false" class="center-block">--}}
+
+{{--        <img src="https://ui-avatars.com/api/?size=190&name=Конюхова+Антонина&font-size=0.45&background=87cefa&color=fff&rounded=false" class="center-block">--}}
+{{--        <img src="https://ui-avatars.com/api/?size=190&name=Конюхова+Антонина&font-size=0.45&background=dda0dd&color=fff&rounded=false" class="center-block">--}}
+{{--        <img src="https://ui-avatars.com/api/?size=190&name=Конюхова+Антонина&font-size=0.45&background=778899&color=fff&rounded=false" class="center-block">--}}
+{{--        <img src="https://ui-avatars.com/api/?size=190&name=Конюхова+Антонина&font-size=0.45&background=008080&color=fff&rounded=false" class="center-block">--}}
+{{--    тосины:--}}
+{{--        <img src="https://ui-avatars.com/api/?size=190&name=Конюхова+Антонина&font-size=0.45&background=66cdaa&color=fff&rounded=false" class="center-block">--}}
+{{--        <img src="https://ui-avatars.com/api/?size=190&name=Конюхова+Антонина&font-size=0.45&background=4682b4&color=fff&rounded=false" class="center-block">--}}
+{{--        <img src="https://ui-avatars.com/api/?size=190&name=Конюхова+Антонина&font-size=0.45&background=fa8072&color=fff&rounded=false" class="center-block">--}}
+{{--        <img src="https://ui-avatars.com/api/?size=190&name=Конюхова+Антонина&font-size=0.45&background=6b8e23&color=fff&rounded=false" class="center-block">--}}
+{{--        <img src="https://ui-avatars.com/api/?size=190&name=Конюхова+Антонина&font-size=0.45&background=bdb76b&color=fff&rounded=false" class="center-block">--}}
+{{--        <img src="https://ui-avatars.com/api/?size=190&name=Конюхова+Антонина&font-size=0.45&background=8b4513&color=fff&rounded=false" class="center-block">--}}
         <div class="liteTooltip" >
-            <h6>{{$role->name}}</h6>
+            <h6>
+{{--                <img src="https://ui-avatars.com/api/?size=190&name=Конюхова+Антонина&font-size=0.45&background=ffa07a&color=fff&rounded=false" class="center-block" width="30px">--}}
+
+                {{$role->name}}
+            </h6>
         </div>
         <a href="/cabinet">&#9733; [личный кабинет]</a>
         <br>

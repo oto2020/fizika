@@ -164,7 +164,6 @@ class HomeController extends Controller
             return view('mainpage', compact('sections', 'section', 'lessons', 'lesson', 'user', 'role'));
         }
         return view('sectionpage', compact('sections', 'section', 'lessons', 'user', 'role'));
-        //return view('sob', compact('subjects','good_collect','bad_collect','downloaded_collect'));
     }
 
 

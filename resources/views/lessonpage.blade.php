@@ -90,13 +90,16 @@
                     .media-block .media-body {
                         display: block;
                         overflow: hidden;
-                        width: auto
+                        width: auto;
+                        margin-left:60px;
                     }
                 </style>
 
                 <!--===================================================-->
                 <div class="media-block">
-                    <a class="media-left" href="#"><img class="img-circle img-sm" alt="Профиль пользователя" src="https://bootstraptema.ru/snippets/icons/2016/mia/1.png"></a>
+                    <a class="media-left" href="#">
+                        <img class="img-circle img-sm" src="https://ui-avatars.com/api/?size=190&name=Максим+Смирнов&font-size=0.45&background=87cefa&color=fff&rounded=false" width="40px">
+                    </a>
                     <div class="media-body">
 
                         <div class="mar-btm">
@@ -109,7 +112,9 @@
                 </div>
 
                 <div class="media-block">
-                    <a class="media-left" href="#"><img class="img-circle img-sm" alt="Профиль пользователя" src="https://bootstraptema.ru/snippets/icons/2016/mia/1.png"></a>
+                    <a class="media-left" href="#">
+                        <img class="img-circle img-sm" src="https://ui-avatars.com/api/?size=190&name=Николай+Прусикин&font-size=0.45&background=ffa07a&color=fff&rounded=false" width="40px">
+                    </a>
                     <div class="media-body">
 
                         <div class="mar-btm">
