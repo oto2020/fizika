@@ -72,7 +72,6 @@ Route::get('/{sectionURL}/{lessonURL}/{testURL}/restore_test', 'HomeController@r
 Route::get('/{sectionURL}/{lessonURL}/{testURL}/mark_as_deleted', 'HomeController@markAsDeletedTest');
 
 
-
 // страница с каким-либо разделом (Например: 7 класс)
 Route::get('/{sectionURL}', 'HomeController@showSectionPage');
 
