@@ -81,6 +81,7 @@ class RegisterController extends Controller
 //        ';
 //
 //    }
+
     public function register(Request $request) {
         // запишем в сессию, чтобы было автозаполнение
         // чтобы например, при вводе неправильного пароля после перезагрузки страницы не пришлось заполнять все поля заново

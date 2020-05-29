@@ -519,68 +519,68 @@ class PostController extends Controller
         return redirect($newLesson->full_url . '/' . $arr['url'])->with('message', 'Тест ['.$test->name.'] успешно сохранен!');
     }
 
-    // Получает на вход массив со всеми пользователями и прроводит их апдейт
-    public function editUsersPOST(Request $request)
-    {
-        $messages = [];
-        $errors = [];
-        $allFields = $request->all();
-        // отсекаем лишнее
-        unset($allFields['_token']);
+// Получает на вход массив со всеми пользователями и проводит их апдейт
+public function editUsersPOST(Request $request)
+{
+    $messages = [];
+    $errors = [];
+    $allFields = $request->all();
+    // отсекаем лишнее
+    unset($allFields['_token']);
 
-        // приведем массив к виду id => [$user]
-        $users = [];
-        // пока что имеем вид: "user_role_name|6" => "Администратор"
-        foreach ($allFields as $fieldNameID => $fieldValue) {
-            // разобьем запись типа "user_role_name|6" на две составляющие: имя поля и id
-            $tmp_arr = explode('|', $fieldNameID);
+    // приведем массив к виду id => [$user]
+    $users = [];
+    // пока что имеем вид: "user_role_name|6" => "Администратор"
+    foreach ($allFields as $fieldNameID => $fieldValue) {
+        // разобьем запись типа "user_role_name|6" на две составляющие: имя поля и id
+        $tmp_arr = explode('|', $fieldNameID);
 
-            $fieldName = $tmp_arr[0];
-            $id = $tmp_arr[1];
-            $users[$id] [$fieldName] = $fieldValue;
-        }
-
-        // Список всех ролей (чтобы пользователю можно было переназначить роль)
-        $roles = DB::table('user_roles')
-            ->get();
-        // проведем апдейт пользователей:
-        foreach ($users as $id => $user) {
-            if (array_key_exists('delete_user', $user) && $user['delete_user'] == 'on')
-            {
-                // УДАЛЯЯ ПОЛЬЗОВАТЕЛЯ - УДАЛЯЕМ ВСЕ ЕГО РЕЗУЛЬТАТЫ
-                try {
-                    DB::table('test4_results')->where('user_id','=', $id)->delete();
-                }
-                catch (\Exception $e) {
-                    echo 'Не удалось удалить результат прохождения теста'; // ну не удалось, так не удалось. не критично
-                }
-                // попробуем удалить пользователя
-                try {
-                    DB::table('users')->where('id', '=', $id)->delete();
-                    $messages []= 'Пользователь [' . $user['name'] . '] из [' . $user['class_name'] . '] и все его результаты удалены.';
-                    continue; // так как пользователь удалён -- дальнейшие действия с ним бесполезны
-                }
-                catch (\Exception $e) {
-                    $errors []= 'Не удалось удалить пользователя: ' . $e->getMessage();
-                }
-            }
-            if ($user['password']!=null) {
-                $user['password'] = Hash::make($user['password']);
-                $messages []= 'Пароль для пользователя [' . $user['name'] . '] из [' . $user['class_name'] . '] обновлён.';
-            }
-            else {
-                unset($user['password']);
-            }
-            try {
-                DB::table('users')
-                    ->where('id', '=', $id)
-                    ->update($user);
-            } catch (\Exception $e) {
-                $errors []= 'Не удалось обновить данные пользователя ['.$user['name'].']. ПАРОЛЬ ТАКЖЕ НЕ СБРОШЕН. ' . $e->getMessage();
-            }
-        }
-        return redirect()->back()->with('errors', $errors)->with('messages', $messages)->with('message', 'Изменения применены');
+        $fieldName = $tmp_arr[0];
+        $id = $tmp_arr[1];
+        $users[$id] [$fieldName] = $fieldValue;
     }
+
+    // Список всех ролей (чтобы пользователю можно было переназначить роль)
+    $roles = DB::table('user_roles')
+        ->get();
+// проведем апдейт пользователей:
+foreach ($users as $id => $user) {
+    if (array_key_exists('delete_user', $user) && $user['delete_user'] == 'on')
+    {
+    // УДАЛЯЯ ПОЛЬЗОВАТЕЛЯ - УДАЛЯЕМ ВСЕ ЕГО РЕЗУЛЬТАТЫ
+    try {
+        DB::table('test4_results')->where('user_id','=', $id)->delete();
+    }
+    catch (\Exception $e) {
+        echo 'Не удалось удалить результат прохождения теста'; // ну не удалось, так не удалось. не критично
+    }
+    // попробуем удалить пользователя
+    try {
+        DB::table('users')->where('id', '=', $id)->delete();
+        $messages []= 'Пользователь [' . $user['name'] . '] из [' . $user['class_name'] . '] и все его результаты удалены.';
+        continue; // так как пользователь удалён -- дальнейшие действия с ним бесполезны
+    }
+    catch (\Exception $e) {
+        $errors []= 'Не удалось удалить пользователя: ' . $e->getMessage();
+    }
+    }
+    if ($user['password']!=null) {
+        $user['password'] = Hash::make($user['password']);
+        $messages []= 'Пароль для пользователя [' . $user['name'] . '] из [' . $user['class_name'] . '] обновлён.';
+    }
+    else {
+        unset($user['password']);
+    }
+    try {
+        DB::table('users')
+            ->where('id', '=', $id)
+            ->update($user);
+    } catch (\Exception $e) {
+        $errors []= 'Не удалось обновить данные пользователя ['.$user['name'].']. ПАРОЛЬ ТАКЖЕ НЕ СБРОШЕН. ' . $e->getMessage();
+    }
+}
+return redirect()->back()->with('errors', $errors)->with('messages', $messages)->with('message', 'Изменения применены');
+}
 
     //удаляет результат прохождения теста
     public function deleteTestResultPOST (Request $request)
