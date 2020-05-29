@@ -28,7 +28,7 @@ Route::get('/', function () {
     return redirect('/main');
 });
 
-// Добавление личного кабинета
+// Тестовая страница
 Route::get('/test', 'HomeController@testPage');
 
 // редактирование личных данных ученика
