@@ -21,7 +21,7 @@
 
     .controlPanel {
         height: 60px;
-        width: 1200px;
+        width: 1000px;
     }
 
     .controlElement {
@@ -30,7 +30,6 @@
         width: 210px;
         height: 85px;
         border: 1px solid black;
-        margin-right: 10px;
         padding: 2px;
     }
 
@@ -48,22 +47,19 @@
 <br>
 <div id="mainWindow">
     <div class="controlPanel">
-        <div class="controlElement">
-            <div id="rangeValue1">Количество шаров: 1</div>
-            <br>
-            <input class="slider" id="rangeOfCirclesCount" max="30" min="1" type="range" value="1"/></div>
+
 
         <div class="controlElement">
-            <div id="rangeValue2">Радиус шаров: 30</div>
+            <div id="rangeValue2">Радиус шаров: 12</div>
             <br>
-            <input class="slider" id="rangeRadiusOfCircles" max="100" min="3" type="range" value="30"/></div>
+            <input class="slider" id="rangeRadiusOfCircles" max="100" min="3" type="range" value="12"/></div>
 
-        <div class="controlElement">
+        <div class="controlElement" style="margin-left: 10px;">
             <div id="rangeValue3">Количество сторон: 10</div>
             <br>
             <input class="slider" id="rangeCountOfSides" max="30" min="3" type="range" value="10"/></div>
 
-        <div class="controlElement" id="buttons">
+        <div class="controlElement" id="buttons" style="float:right">
             <a class="btn btn-default btn-xs" style="width:200px" id="gravityButtonOn">Включить
                 гравитацию
             </a>
@@ -77,6 +73,10 @@
         <canvas height="600px" id="canvas" width="1000px" style="margin-top:4px;"></canvas>
 
         <div id="circlesColba" style="margin-top:25px">&nbsp;</div>
+    </div>
+
+    <div class="progress" style="width:1000px">
+        <div id="progress_bar" style="background-color: red; width: 0%;"> </div>
     </div>
 </div>
 
@@ -173,8 +173,9 @@
         }
 
         // [void] задает начальную скорость
-        setStartVelocity(MASSA, CENTER_X, CENTER_Y) {
-            this.V = new Point(3 * (CENTER_Y - this.centerPoint.Y) / MASSA, -3 * (CENTER_X - this.centerPoint.X) / MASSA) // вектор начальной скорости перпендикулярен вектору начального ускорения (x = y; y = -x)
+        setStartVelocity(MASSA, V_X, V_Y) {
+            //this.V = new Point(3 * (CENTER_Y - this.centerPoint.Y) / MASSA, -3 * (CENTER_X - this.centerPoint.X) / MASSA) // вектор начальной скорости перпендикулярен вектору начального ускорения (x = y; y = -x)
+            this.V = new Point (V_X, V_Y);
         }
 
         // [void] задает начальное ускорение
@@ -241,6 +242,14 @@
             context.fill();
         }
 
+        static drawGun(gun, context) {
+            context.beginPath();
+            context.moveTo(gun.p1.X, gun.p1.Y);
+            context.lineTo(gun.p2.X, gun.p2.Y);
+            context.lineWidth = 15;
+            context.strokeStyle = "#ff0000"; // цвет линии
+            context.stroke();
+        }
         // возвращает случайный цвет
         static randColor() {
             var r = Math.floor(Math.random() * (256)), 	// Math.random() возвращает дробное число в промежутке от 0 до 1
@@ -279,31 +288,52 @@
         }
     }
 
+    class Gun {
+        constructor(canvas_width, canvas_height, len) {
+            this.canvas_width = canvas_width;
+            this.canvas_height = canvas_height;
+            this.len = len;
+            this.angle = 300;
+            this.p1 = new Point(0, 0 + canvas_height);
+            this.p2 = new Point(Math.cos(this.angle), Math.sin(this.angle) + this.canvas_height);
+        }
+        // получает угол, изменяет координаты p2
+        setAngle(angle) {
+            this.angle = angle;
+            this.p2.X = this.len * Math.cos(angle*0.017) + this.p1.X;
+            this.p2.Y = this.len * Math.sin(angle*0.017) + this.canvas_height;
+           // console.log(angle);
+           // console.log(this.p2);
+        }
+    }
     // глобальные переменные
     var circles = [];
     var IS_GRAVITY_ON = false;
 
     // создает HTML-объект колбу и добавляет её к родителю с id = "circlesColba"
-    function createColba(N) {
-        document.getElementById("circlesColba").innerHTML = ''; // очистка
-        for (var i = 0; i < N; i++) {
-            var colba = document.createElement('div');
-            colba.id = 'part_' + i;
-            colba.style.width = '70px';
-            colba.style.height = 600 / N - 2 + 'px';
-            colba.style.background = 'linear-gradient(4deg, #EEEEEE, #FFFFFF)'; // background
-            colba.style.border = '1px solid #DDDDDD';
-            colba.style.borderRadius = '100px';
-            document.getElementById("circlesColba").appendChild(colba);
-        }
-    }
+    // function createColba(N) {
+    //     document.getElementById("circlesColba").innerHTML = ''; // очистка
+    //     for (var i = 0; i < N; i++) {
+    //         var colba = document.createElement('div');
+    //         colba.id = 'part_' + i;
+    //         colba.style.width = '70px';
+    //         colba.style.height = 600 / N - 2 + 'px';
+    //         colba.style.background = 'linear-gradient(4deg, #EEEEEE, #FFFFFF)'; // background
+    //         colba.style.border = '1px solid #DDDDDD';
+    //         colba.style.borderRadius = '100px';
+    //         document.getElementById("circlesColba").appendChild(colba);
+    //     }
+    // }
 
-
-    function begin(N) {
+    // ПУШКА
+    let gun = new Gun(canvas.width, canvas.height, 100);
+    gun.setAngle(315);
+    let progress = 0;
+    function begin() {
         // канвас и элементы управления
         var canvas = document.getElementById('canvas');
 
-        var rangeOfCirclesCount = document.getElementById('rangeOfCirclesCount'); 	// ползунок с выбором количества шаров
+        // var rangeOfCirclesCount = document.getElementById('rangeOfCirclesCount'); 	// ползунок с выбором количества шаров
         var rangeRadiusOfCircles = document.getElementById('rangeRadiusOfCircles'); // ползунок с выбором радиуса шаров
         var rangeCountOfSides = document.getElementById('rangeCountOfSides'); 		// ползунок с выбором массы шаров
 
@@ -321,27 +351,30 @@
 
         // Поверхность для отрисовки и колба с шариками
         const context = canvas.getContext('2d');
-        createColba(rangeOfCirclesCount.value);
-
+        // createColba(rangeOfCirclesCount.value);
+        //
         // константы
         const CENTER_X = canvas.width / 2;  	// 500
         const CENTER_Y = canvas.height / 2; 	// 300
         const DELTA_T = 0.015;            	// шаг (в мс).
         const MASSA = 10;					// масса шаров
 
+
+
+
         // создание шариков в зависимости от их количества
         circles = [];						// массив с шариками
-        var alpha = 360 / N;
-        for (var a = 0; a < 360 + 0; a += alpha) { // вращаем угол на значение alpha
-            var x = CENTER_X + 250 * Math.cos(a * 3.14 / 180);
-            var y = CENTER_Y + 250 * Math.sin(a * 3.14 / 180);
-
-            var circle1 = new Circle(new Point(x, y), rangeRadiusOfCircles.value, rangeCountOfSides.value, myDrawing.randColor()); 		// задали координаты, радиус, кол-во сторон, цвет
-            circle1.setStartVelocity(MASSA, CENTER_X, CENTER_Y);	// задали начальную скорость
-
-            circle1.calc(IS_GRAVITY_ON, MASSA, rangeCountOfSides.value, rangeRadiusOfCircles.value, DELTA_T);								// расчитали первый раз
-            circles.push(circle1);																											// закинули в массив
-        }
+        // var alpha = 360 / N;
+        // for (var a = 0; a < 360 + 0; a += alpha) { // вращаем угол на значение alpha
+        //     var x = CENTER_X + 250 * Math.cos(a * 3.14 / 180);
+        //     var y = CENTER_Y + 250 * Math.sin(a * 3.14 / 180);
+        //
+        //     var circle1 = new Circle(new Point(x, y), rangeRadiusOfCircles.value, rangeCountOfSides.value, myDrawing.randColor()); 		// задали координаты, радиус, кол-во сторон, цвет
+        //     circle1.setStartVelocity(MASSA, CENTER_X, CENTER_Y);	// задали начальную скорость
+        //
+        //     circle1.calc(IS_GRAVITY_ON, MASSA, rangeCountOfSides.value, rangeRadiusOfCircles.value, DELTA_T);								// расчитали первый раз
+        //     circles.push(circle1);																											// закинули в массив
+        // }
 
         // Вспомогательная функция, возвращает новую точку в координатах мыши
         function getMousePoint(e) {
@@ -350,52 +383,111 @@
 
         // ИТЕРАЦИЯ ПРОРИСОВКИ И ПЕРЕРАСЧЕТОВ
         function mainIteration() {
+
+            // выбор силы выстрела
+            if(isMousePressed) {
+                progress += 0.9;
+                if (progress >= 100) progress = 100;
+                document.getElementById('progress_bar').style.width = progress + '%';
+            }
+
+
+
             context.fillStyle = "black";
             context.fillRect(0, 0, canvas.width, canvas.height); 	// ОЧИСТКА ЭКРАНА
-
-            for (var i = 0; i < circles.length; i++) {
+            // нарисовали пушку
+            myDrawing.drawGun(gun, context);
+            for (let i = 0; i < circles.length; i++) {
                 circles[i].calc(IS_GRAVITY_ON, MASSA, rangeCountOfSides.value, rangeRadiusOfCircles.value, DELTA_T);
                 circles[i].draw(context);
             }
         }
 
-        var mainInterval = setInterval(mainIteration, 1); // пересчет каждую милисекунду
+        let mainInterval = setInterval(mainIteration, 1); // пересчет каждую милисекунду
 
-        // Событие MOUSE_UP	(добавление новой точки или завершение построения)
-        canvas.addEventListener('mouseup', e => {
-            for (var i = 0; i < circles.length; i++) {
-                if (circles[i].isActive) {
-                    var polygon = circles[i].polygon;
-                    var mouse = getMousePoint(e);
-                    if (MyMath.isMouseInPolygon(polygon, mouse)) {
-                        circles[i].deactivate();
-                        var colba = document.getElementById('part_' + i); 		// находим колбу по id
-                        colba.style.background = circles[i].getColor();	// задаем ей цвет шара, по которому попали мышкой
-                        console.log(i);
-                        //console.log(document.getElementById('part'+i));
-                    }
-                }
-            }
-        });
-
-        // ОБНОВЛЕНИЕ ЛЕЙБЛОВ ПОЛЗУНКОВ ПРИ ИХ ИЗМЕНЕНИИ
-        rangeOfCirclesCount.oninput = function () {
-            document.getElementById('rangeValue1').textContent = "Количество шаров: " + rangeOfCirclesCount.value;
-
-            // если задели ползунок с количеством шаров - всё начинется заново
-            clearInterval(mainInterval); 		// снимаем с образобки предыдущий обработчик для старых шаров
-            begin(rangeOfCirclesCount.value);	// начали всё сначала с новым количеством шаров
-        };
         rangeRadiusOfCircles.oninput = function () {
             document.getElementById('rangeValue2').textContent = "Радиус шаров: " + rangeRadiusOfCircles.value;
         };
         rangeCountOfSides.oninput = function () {
             document.getElementById('rangeValue3').textContent = "Количество сторон: " + rangeCountOfSides.value;
         };
+
+        // дуло вверх-вниз, влево-вправо
+        document.onkeydown = function (e) {
+            if (e.code === 'KeyW') {
+                // console.log('была нажата KeyW');
+                let angle = gun.angle;
+                angle+=3;
+                gun.setAngle(angle);
+            }
+            if (e.code === 'KeyS') {
+                //console.log('была нажата KeyS');
+                let angle = gun.angle;
+                angle-=3;
+                gun.setAngle(angle);
+            }
+
+            if (e.code === 'KeyA') {
+                // console.log('была нажата KeyW');
+                let angle = gun.angle;
+                gun.p1.X -=9;
+                if (gun.p1.X <= 0) gun.p1.X = 0;
+                gun.setAngle(angle);
+            }
+            if (e.code === 'KeyD') {
+                //console.log('была нажата KeyS');
+                let angle = gun.angle;
+                gun.p1.X +=9;
+                if (gun.p1.X >= canvas.width) gun.p1.X = canvas.width;
+                gun.setAngle(angle);
+            }
+        };
+
+        canvas.onmousemove = function(e) {
+         //   console.log(e);
+
+            let a = new Point(e.layerX, e.layerY);
+            let b = new Point(gun.p1.X, gun.p1.Y);
+            let c = new Point(gun.p1.X + 100, gun.p1.Y);
+
+            // узнаем угол между ab и cb
+            let x1 = a.X - b.X;
+            let x2 = c.X - b.X;
+            let y1 = a.Y - b.Y;
+            let y2 = c.Y - b.Y;
+            let d1 = Math.sqrt (x1 * x1 + y1 * y1);
+            let d2 = Math.sqrt (x2 * x2 + y2 * y2);
+            let angle =  370 - Math.acos ((x1 * x2 + y1 * y2) / (d1 * d2)) / 0.017;
+
+            gun.setAngle(angle);
+        };
+        let isMousePressed = false;
+        // выбор силы выстрела
+        canvas.onmousedown = function(e) {
+            isMousePressed = true;
+        };
+        // выстрел
+        canvas.onmouseup = function(e) {
+            isMousePressed = false;
+            console.log(gun.angle);
+
+            let V_X = progress * 3 *  Math.cos((gun.angle)*0.017);
+            let V_Y = progress * 3 *  Math.sin((gun.angle)*0.017);
+            console.log(V_X, V_Y);
+
+            progress = 0;
+            document.getElementById('progress_bar').style.width = progress + '%';
+            let circle1 = new Circle(new Point(gun.p2.X, gun.p2.Y), rangeRadiusOfCircles.value, rangeCountOfSides.value, myDrawing.randColor()); 		// задали координаты, радиус, кол-во сторон, цвет
+            circle1.setStartVelocity(MASSA, V_X, V_Y);	// задали начальную скорость
+            circle1.calc(IS_GRAVITY_ON, MASSA, rangeCountOfSides.value, rangeRadiusOfCircles.value, DELTA_T);								// расчитали первый раз
+            circles.push(circle1);
+
+        };
+
     }
 
     // стартуем
-    begin(rangeOfCirclesCount.value);
+    begin();
 </script>
 
 
