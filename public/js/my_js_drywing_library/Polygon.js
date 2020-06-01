@@ -1,4 +1,4 @@
-class Polygon 
+class Polygon
 {
 	constructor (fillColor) {
 		this.arrPoints = [];
@@ -13,7 +13,7 @@ class Polygon
 	getCount() {
 		return this.arrPoints.length;
 	}
-	
+
 	// [Point] вернет последнюю точку полигона
 	getLastVertex() {
 		return this.arrPoints[this.arrPoints.length - 1];
@@ -23,13 +23,10 @@ class Polygon
 	getFirstVertex() {
 		return this.arrPoints[0];
 	}
-	
-	// [void] добавляет вершину этому полигону 
+
+	// [void] добавляет вершину этому полигону
 	addVertex (point) {
 		this.arrPoints.push(point)
 		//console.log("Добавили ещё одну точку. Ура! Теперь ("+this.arrPoints.length+") точек");
 	}
-
-
-
 }

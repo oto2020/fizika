@@ -1,4 +1,4 @@
-class MyMath 
+class MyMath
 {
 	// [boolean] проверяет факт пересечения отрезка "a" c отрезком "b"
 	static isIntersection(a1, a2, b1, b2) {
@@ -9,7 +9,7 @@ class MyMath
 		v4=(a2.X-a1.X)*(b2.Y-a1.Y)-(a2.Y-a1.Y)*(b2.X-a1.X);
 		return (v1*v2<0 && v3*v4<0);
 	}
-	
+
 	// [boolean] попадание мыши внутрь полигона
 	static isMouseInPolygon(polygon1, mouse) {
 		var countOfIntersections = 0;
@@ -25,8 +25,4 @@ class MyMath
 		if(this.isIntersection(a1, a2, polygon1.getFirstVertex(), polygon1.getLastVertex())) countOfIntersections++;
 		return (countOfIntersections%2 == 1)
 	}
-
-	
-
-
 }
