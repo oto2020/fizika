@@ -35,6 +35,10 @@ class HomeController extends Controller
     {
         return view('testtesttest');
     }
+    public function testPage2()
+    {
+        return view('testtesttest2');
+    }
 
     // Вытягивает из БД разделы сайта
     private function getSections()

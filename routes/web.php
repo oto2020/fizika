@@ -30,6 +30,7 @@ Route::get('/', function () {
 
 // Тестовая страница
 Route::get('/test', 'HomeController@testPage');
+Route::get('/test2', 'HomeController@testPage2');
 
 // редактирование личных данных ученика
 Route::post('/change_user_info.php', 'PostController@changeUserInfoPOST');
