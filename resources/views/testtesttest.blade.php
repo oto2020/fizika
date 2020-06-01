@@ -6,7 +6,7 @@
     <link href="{{asset('/css/bootstrap.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('/css/main.css')}}" rel="stylesheet" type="text/css">
 </head>
-
+Шарики-планеты-атомы, черная дыра
 <style type="text/css">canvas {
         border: 1px solid black;
         float: left;
