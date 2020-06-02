@@ -6,7 +6,7 @@
     <link href="{{asset('/css/bootstrap.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('/css/main.css')}}" rel="stylesheet" type="text/css">
 </head>
-выстрел шариком под углом по нажатию пробела
+Движение: A и D. Выстрел шариком: ЛКМ
 <style type="text/css">canvas {
         border: 1px solid black;
         float: left;
@@ -54,21 +54,43 @@
             <br>
             <input class="slider" id="rangeRadiusOfCircles" max="100" min="3" type="range" value="12"/></div>
 
-        <div class="controlElement" style="margin-left: 10px;">
-            <div id="rangeValue3">Количество сторон: 10</div>
+        <div class="controlElement" style="margin-left: 10px; margin-right:10px">
+            <div id="rangeValue3">Количество сторон: 15</div>
             <br>
-            <input class="slider" id="rangeCountOfSides" max="30" min="3" type="range" value="10"/></div>
+            <input class="slider" id="rangeCountOfSides" max="30" min="3" type="range" value="15"/>
+        </div>
 
-        <div class="controlElement" id="buttons" style="float:right">
-            <a class="btn btn-default btn-xs" style="width:200px" id="gravityButtonOn">Включить
-                гравитацию
+
+        <div class="controlElement" style="margin-right:10px; width:130px; border: 0px;">
+            <a class="btn btn-default btn-xs" style="width:120px; border: 1px solid black;" id="stopStartButton">
+                Стоп
             </a>
-            <a class="btn btn-default btn-xs" style="width:200px; margin-top:3px" id="gravityButtonOff">Выключить
-                гравитацию
+            <a class="btn btn-default btn-xs" style="width:120px; border: 1px solid black; margin-top:6px" id="clearButton">
+                Очистить
             </a>
         </div>
-    </div>
 
+
+
+        <div class="row-cols-2">
+            <div class="controlElement" id="buttongravityButtonBlackHole" style="float:right; height:45px">
+                <a class="btn btn-default btn-xs" style="width:200px" id="gravityButtonBlackHole">
+                    Черная дыра
+                </a>
+            </div>
+            <div class="controlElement" id="buttongravityButtonEarth" style="float:right; height:45px; ">
+                <a class="btn btn-default btn-xs" style="width:200px; margin-top:3px" id="gravityButtonEarth">
+                    Притяжение земли
+                </a>
+            </div>
+        </div>
+        <div class="row-cols-2">
+            <div class="controlElement" style="float:right; height:40px; width:420px; border: 0px;">
+                <div id="rangeValue4">Сила ветра: 0</div>
+                <input class="slider" id="rangeWindPower" max="30" min="0" type="range" value="15" style="width:420px"/>
+            </div>
+        </div>
+    </div>
     <div>
         <canvas height="600px" id="canvas" width="1000px" style="margin-top:4px;"></canvas>
 
@@ -114,15 +136,19 @@
         }
 
         // [void] пересчитывает координаты
-        calcCoordinates(IS_GRAVITY_ON, MASSA, deltaT) {
+        calcCoordinates(IS_GRAVITY_BLACKHOLE, windPower, MASSA, deltaT) {
 
-            if (IS_GRAVITY_ON) {
+            if (IS_GRAVITY_BLACKHOLE) {
                 //a = F / m
                 this.A.X = 3 * (500 - this.centerPoint.X) / MASSA;
                 this.A.Y = 3 * (300 - this.centerPoint.Y) / MASSA;
             } else {
-                this.A.X = 0;
-                this.A.Y = 0;
+                // чтобы не сдувало шары, которые уже лежат на земле
+                if (this.centerPoint.Y < 590)
+                    this.A.X = windPower;
+                else
+                    this.A.X = windPower/15;
+                this.A.Y = 60;
             }
             //v = v0 + a*t;
             this.V.X = this.V.X + this.A.X * deltaT;
@@ -133,34 +159,48 @@
             this.centerPoint.Y = this.centerPoint.Y + this.V.Y * deltaT + this.A.Y * deltaT * deltaT / 2;
 
             /// СТОЛКНОВЕНИЕ СО СТЕНОЙ
-            if (this.centerPoint.X < 0) {// левая стенка
-                this.centerPoint.X -= this.V.X / 10;
-                this.V.X *= -0.8;
+            if (!IS_GRAVITY_BLACKHOLE) {
+                if (this.centerPoint.X < 0) {// левая стенка
+                    this.centerPoint.X -= this.V.X / 10;
+                    this.V.X *= -0.8;
+                    this.V.Y *= 0.9;
+                }
+
+                if (this.centerPoint.X > 1000) {// правая стенка
+                    this.centerPoint.X -= this.V.X / 10;
+                    this.V.X *= -0.8;
+                    this.V.Y *= 0.9;
+                }
+
+                if (this.centerPoint.Y > 600) {// нижняя стенка
+                    this.centerPoint.Y -= this.V.Y / 10;
+                    this.V.Y *= -0.8;
+                    this.V.X *= 0.9;
+                    // особые условия замедления при падении на пол
+                    if (Math.abs(this.V.Y) < 80) this.V.Y *= 0.9;
+                    if (Math.abs(this.V.Y) < 60) this.V.Y *= 0.8;
+                    if (Math.abs(this.V.Y) < 25) this.V.Y *= 0.6;
+                    if (Math.abs(this.V.Y) < 10) this.V.Y *= 0.3;
+                    if (Math.abs(this.V.Y) < 3) this.V.Y *= 0;
+                }
             }
 
-            if (this.centerPoint.X > 1000) {// правая стенка
-                this.centerPoint.X -= this.V.X / 10;
-                this.V.X *= -0.8;
-            }
+
+            // if (this.centerPoint.Y < 0) {// верхняя стенка
+            //     this.centerPoint.Y -= this.V.Y / 10;
+            //     this.V.Y *= -0.8;
+            //     this.V.X *= 0.9;
+            // }
 
 
-            if (this.centerPoint.Y < 0) {// верхняя стенка
-                this.centerPoint.Y -= this.V.Y / 10;
-                this.V.Y *= -0.8;
-            }
 
-
-            if (this.centerPoint.Y > 600) {// нижняя стенка
-                this.centerPoint.Y -= this.V.Y / 10;
-                this.V.Y *= -0.8;
-            }
 
         }
 
         // считает
-        calc(IS_GRAVITY_ON, MASSA, countOfSides, radius, deltaT) {
+        calc(IS_GRAVITY_BLACKHOLE, windPower, MASSA, countOfSides, radius, deltaT) {
             if (this.isActive) {
-                this.calcCoordinates(IS_GRAVITY_ON, MASSA, deltaT);
+                this.calcCoordinates(IS_GRAVITY_BLACKHOLE, windPower, MASSA, deltaT);
                 this.calcSides(countOfSides, radius);
             }
         }
@@ -186,14 +226,12 @@
 
 
     }
-
     class Point {
         constructor(X, Y) {
             this.X = X;
             this.Y = Y;
         }
     }
-
     class Polygon {
         constructor(fillColor) {
             this.arrPoints = [];
@@ -226,7 +264,6 @@
             //console.log("Добавили ещё одну точку. Ура! Теперь ("+this.arrPoints.length+") точек");
         }
     }
-
     class myDrawing {
 
         //рисует заданный полигон (ЗАЛИВКА)
@@ -259,7 +296,6 @@
         }
 
     }
-
     class MyMath {
         // [boolean] проверяет факт пересечения отрезка "a" c отрезком "b"
         static isIntersection(a1, a2, b1, b2) {
@@ -287,7 +323,6 @@
             return (countOfIntersections % 2 == 1)
         }
     }
-
     class Gun {
         constructor(canvas_width, canvas_height, len) {
             this.canvas_width = canvas_width;
@@ -306,24 +341,12 @@
            // console.log(this.p2);
         }
     }
+
     // глобальные переменные
     var circles = [];
-    var IS_GRAVITY_ON = false;
-
-    // создает HTML-объект колбу и добавляет её к родителю с id = "circlesColba"
-    // function createColba(N) {
-    //     document.getElementById("circlesColba").innerHTML = ''; // очистка
-    //     for (var i = 0; i < N; i++) {
-    //         var colba = document.createElement('div');
-    //         colba.id = 'part_' + i;
-    //         colba.style.width = '70px';
-    //         colba.style.height = 600 / N - 2 + 'px';
-    //         colba.style.background = 'linear-gradient(4deg, #EEEEEE, #FFFFFF)'; // background
-    //         colba.style.border = '1px solid #DDDDDD';
-    //         colba.style.borderRadius = '100px';
-    //         document.getElementById("circlesColba").appendChild(colba);
-    //     }
-    // }
+    var IS_GRAVITY_BLACKHOLE = false;
+    let IS_STOPPED = false;
+    document.getElementById("buttongravityButtonEarth").style.background = "rgb(100, 200,100)";
 
     // ПУШКА
     let gun = new Gun(canvas.width, canvas.height, 100);
@@ -334,20 +357,55 @@
         var canvas = document.getElementById('canvas');
 
         // var rangeOfCirclesCount = document.getElementById('rangeOfCirclesCount'); 	// ползунок с выбором количества шаров
+        var rangeWindPower = document.getElementById('rangeWindPower');
         var rangeRadiusOfCircles = document.getElementById('rangeRadiusOfCircles'); // ползунок с выбором радиуса шаров
         var rangeCountOfSides = document.getElementById('rangeCountOfSides'); 		// ползунок с выбором массы шаров
 
-        var gravityButtonOn = document.getElementById("gravityButtonOn"); 		// кнопка "Включить гравитацию"
-        var gravityButtonOff = document.getElementById("gravityButtonOff"); 	// кнопка "Выключить гравитацию"
-        gravityButtonOn.onclick = function () {
-            IS_GRAVITY_ON = true;
-            document.getElementById("buttons").style.background = "rgb(100, 200,100)";
-        };
-        gravityButtonOff.onclick = function () {
-            IS_GRAVITY_ON = false;
-            document.getElementById("buttons").style.background = "white";
+        let stopStartButton = document.getElementById("stopStartButton"); 		            // кнопка "Стоп/старт"
+            stopStartButton.style.backgroundColor = "rgb(200, 100, 100)";
+        let clearButton = document.getElementById("clearButton"); 	                        // кнопка "Очистить"
+        var gravityButtonBlackHole = document.getElementById("gravityButtonBlackHole"); 	// кнопка "Включить гравитацию Черной Дыры"
+        var gravityButtonEarth = document.getElementById("gravityButtonEarth"); 	        // кнопка "Включить гравитацию Земли"
+
+        // Клик по старт/стоп
+        stopStartButton.onclick = function() {
+            // кликнули в тот момент, когда всё остановлено
+            if (IS_STOPPED == true) {
+                // запускаем движение
+                IS_STOPPED = false;
+                // движение запущено, кнопка приобретает надпись "Стоп" и получает красный фон
+                stopStartButton.innerText="Стоп";
+                stopStartButton.style.backgroundColor = "rgb(200, 100, 100)";
+            }
+            else {
+                // останавливаем движение
+                IS_STOPPED = true;
+                // движение остановлено, кнопка приобретает надпись "Старт" и получает зеленый фон
+                stopStartButton.innerText="Продолжить";
+                stopStartButton.style.backgroundColor = "rgb(100, 200, 100)";
+            }
         };
 
+        // клик по "Очистить"
+        clearButton.onclick = function() {
+            circles=[];
+        }
+
+        // клик по Черной дире
+        gravityButtonBlackHole.onclick = function () {
+            IS_GRAVITY_BLACKHOLE = true;
+            document.getElementById("buttongravityButtonBlackHole").style.background = "rgb(100, 200, 100)";
+            document.getElementById("buttongravityButtonEarth").style.background = "white";
+            rangeWindPower.disabled = true;
+        };
+
+        // клик по Земле
+        gravityButtonEarth.onclick = function () {
+            IS_GRAVITY_BLACKHOLE = false;
+            document.getElementById("buttongravityButtonEarth").style.background = "rgb(100, 200, 100)";
+            document.getElementById("buttongravityButtonBlackHole").style.background = "white";
+            rangeWindPower.disabled = false;
+        };
 
         // Поверхность для отрисовки и колба с шариками
         const context = canvas.getContext('2d');
@@ -359,51 +417,39 @@
         const DELTA_T = 0.015;            	// шаг (в мс).
         const MASSA = 10;					// масса шаров
 
-
-
-
-        // создание шариков в зависимости от их количества
         circles = [];						// массив с шариками
-        // var alpha = 360 / N;
-        // for (var a = 0; a < 360 + 0; a += alpha) { // вращаем угол на значение alpha
-        //     var x = CENTER_X + 250 * Math.cos(a * 3.14 / 180);
-        //     var y = CENTER_Y + 250 * Math.sin(a * 3.14 / 180);
-        //
-        //     var circle1 = new Circle(new Point(x, y), rangeRadiusOfCircles.value, rangeCountOfSides.value, myDrawing.randColor()); 		// задали координаты, радиус, кол-во сторон, цвет
-        //     circle1.setStartVelocity(MASSA, CENTER_X, CENTER_Y);	// задали начальную скорость
-        //
-        //     circle1.calc(IS_GRAVITY_ON, MASSA, rangeCountOfSides.value, rangeRadiusOfCircles.value, DELTA_T);								// расчитали первый раз
-        //     circles.push(circle1);																											// закинули в массив
-        // }
 
-        // Вспомогательная функция, возвращает новую точку в координатах мыши
-        function getMousePoint(e) {
-            return new Point(e.layerX, e.layerY);
-        }
+
+        // ЗАПУСК ТАЙМЕРА
+        let mainInterval = setInterval(mainIteration, 1); // пересчет каждую милисекунду
 
         // ИТЕРАЦИЯ ПРОРИСОВКИ И ПЕРЕРАСЧЕТОВ
         function mainIteration() {
-
             // выбор силы выстрела
-            if(isMousePressed) {
+            if (isMousePressed) {
                 progress += 0.9;
                 if (progress >= 100) progress = 100;
                 document.getElementById('progress_bar').style.width = progress + '%';
             }
 
-
-
-            context.fillStyle = "black";
-            context.fillRect(0, 0, canvas.width, canvas.height); 	// ОЧИСТКА ЭКРАНА
-            // нарисовали пушку
-            myDrawing.drawGun(gun, context);
-            for (let i = 0; i < circles.length; i++) {
-                circles[i].calc(IS_GRAVITY_ON, MASSA, rangeCountOfSides.value, rangeRadiusOfCircles.value, DELTA_T);
-                circles[i].draw(context);
+            // если не стоим на паузе
+            if (!IS_STOPPED) {
+                context.fillStyle = "black";
+                context.fillRect(0, 0, canvas.width, canvas.height); 	// ОЧИСТКА ЭКРАНА
+                // нарисовали пушку
+                myDrawing.drawGun(gun, context);
+                for (let i = 0; i < circles.length; i++) {
+                    circles[i].calc(IS_GRAVITY_BLACKHOLE, rangeWindPower.value - 15, MASSA, rangeCountOfSides.value, rangeRadiusOfCircles.value, DELTA_T);
+                    circles[i].draw(context);
+                }
             }
         }
 
-        let mainInterval = setInterval(mainIteration, 1); // пересчет каждую милисекунду
+
+
+        rangeWindPower.oninput = function () {
+            document.getElementById('rangeValue4').textContent = "Сила ветра: " + (rangeWindPower.value - 15);
+        };
 
         rangeRadiusOfCircles.oninput = function () {
             document.getElementById('rangeValue2').textContent = "Радиус шаров: " + rangeRadiusOfCircles.value;
@@ -479,7 +525,7 @@
             document.getElementById('progress_bar').style.width = progress + '%';
             let circle1 = new Circle(new Point(gun.p2.X, gun.p2.Y), rangeRadiusOfCircles.value, rangeCountOfSides.value, myDrawing.randColor()); 		// задали координаты, радиус, кол-во сторон, цвет
             circle1.setStartVelocity(MASSA, V_X, V_Y);	// задали начальную скорость
-            circle1.calc(IS_GRAVITY_ON, MASSA, rangeCountOfSides.value, rangeRadiusOfCircles.value, DELTA_T);								// расчитали первый раз
+            circle1.calc(IS_GRAVITY_BLACKHOLE, rangeWindPower.value - 15, MASSA, rangeCountOfSides.value, rangeRadiusOfCircles.value, DELTA_T);								// расчитали первый раз
             circles.push(circle1);
 
         };
