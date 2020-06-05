@@ -57,13 +57,16 @@ class LoginController extends Controller
             catch(\Exception $e) {
                 dd('Не удалось определить роль пользователя. Обратитесь к администратору!');
             }
+            $this->mylog('info', 'Вошел в систему');
             return redirect('/main')->with('message', 'Вы вошли в систему как ['.$role->name.']. '.$role->description);
         }
+        $this->mylog('info', 'Попытался войти в систему под email: ' . $request->email);
         return redirect('/login')->with('err_login', 'Неправильный логин или пароль');
     }
 
     public function logout()
     {
+        $this->mylog('info', 'Вышел из системы');
         Auth::logout();
         return redirect()->back()->with('message', 'Вы зачем-то вышли.');
     }

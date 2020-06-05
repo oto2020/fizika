@@ -42,6 +42,7 @@ class PostController extends Controller
             dd('При добавлении записи в БД произошла ошибка. '.$exc->getMessage());
             return redirect()->back()->with('error', 'При добавлении записи в БД произошла ошибка. '.$exc->getMessage());
         }
+        $this->mylog('warning', 'Добавил страницу: /' . $sectionURL . '/' . $request->url);
         return redirect('/' . $sectionURL . '/' . $request->url)->with('message', 'Страница успешно размещена!');
     }
 
@@ -85,6 +86,7 @@ class PostController extends Controller
         }
         $href = '/' . $sectionURL . '/' . $request->url;
         if ($request->url == 'glavnaya-stranica') $href = '/main';
+        $this->mylog('warning', 'Произвел редактирование страницы: /' . $sectionURL . '/' . $request->url);
         return redirect($href)->with('message', 'Страница успешно отредактирована!');
     }
 
@@ -129,6 +131,7 @@ class PostController extends Controller
                 return redirect('/add_img')->with('error', 'Выберите файл (файлы)');
             }
         }
+        $this->mylog('warning', 'Загрузил на сайт картинки с префиксом: ' . $request->img_future_name);
     }
 
 
@@ -138,7 +141,7 @@ class PostController extends Controller
         $your_answers = $request->all();
         // получим тест
         $test = DB::table('test1_tests')
-            ->select('id', 'name', 'url', 'preview_text', 'user')
+            ->select('id', 'name', 'url', 'preview_text', 'full_url', 'user')
             ->where('url', '=', $testURL)
             ->orderBy('id', 'asc')
             ->get()[0];
@@ -185,7 +188,7 @@ class PostController extends Controller
                     'details' => $json,
                     'datetime' => now(),
                 ]);
-
+            $this->mylog('info', 'Завершил прохождение теста: ' . $test->full_url . ' С результатом: ' . $point);
             return redirect()->back()->with('message', 'Тест пройден, результат сохранён.');
         }
         catch(\Exception $e) {
@@ -342,6 +345,7 @@ class PostController extends Controller
             ->where('id', '=', $lesson->section_id)
             ->get()[0]->url;
 
+        $this->mylog('warning', 'Добавил тест: /'.$sectionURL.'/'.$lesson->url.'/'.$arr['url']);
         return redirect('/'.$sectionURL.'/'.$lesson->url .'/'.$arr['url'])->with('message', 'Тест ['.$request->test_name.'] успешно сохранен!');
     }
 
@@ -515,7 +519,7 @@ class PostController extends Controller
             $questionID++;
         }
         // ТАКИМИ ВОТ МУЧЕНИЯМИ ЗАПИСАНЫ НОВЫЕ ВОПРОСЫ И ОТВЕТЫ.
-
+        $this->mylog('warning', 'Произвел редактирование теста: /' . $newLesson->full_url);
         return redirect($newLesson->full_url . '/' . $arr['url'])->with('message', 'Тест ['.$test->name.'] успешно сохранен!');
     }
 
@@ -543,43 +547,43 @@ public function editUsersPOST(Request $request)
     // Список всех ролей (чтобы пользователю можно было переназначить роль)
     $roles = DB::table('user_roles')
         ->get();
-// проведем апдейт пользователей:
-foreach ($users as $id => $user) {
-    if (array_key_exists('delete_user', $user) && $user['delete_user'] == 'on')
-    {
-    // УДАЛЯЯ ПОЛЬЗОВАТЕЛЯ - УДАЛЯЕМ ВСЕ ЕГО РЕЗУЛЬТАТЫ
-    try {
-        DB::table('test4_results')->where('user_id','=', $id)->delete();
+    // проведем апдейт пользователей:
+    foreach ($users as $id => $user) {
+        if (array_key_exists('delete_user', $user) && $user['delete_user'] == 'on') {
+            // УДАЛЯЯ ПОЛЬЗОВАТЕЛЯ - УДАЛЯЕМ ВСЕ ЕГО РЕЗУЛЬТАТЫ
+            try {
+                DB::table('test4_results')->where('user_id','=', $id)->delete();
+            }
+            catch (\Exception $e) {
+                echo 'Не удалось удалить результат прохождения теста'; // ну не удалось, так не удалось. не критично
+            }
+            // попробуем удалить пользователя
+            try {
+                DB::table('users')->where('id', '=', $id)->delete();
+                $messages []= 'Пользователь [' . $user['name'] . '] из [' . $user['class_name'] . '] и все его результаты удалены.';
+                continue; // так как пользователь удалён -- дальнейшие действия с ним бесполезны
+            }
+            catch (\Exception $e) {
+                $errors []= 'Не удалось удалить пользователя: ' . $e->getMessage();
+            }
+        }
+        if ($user['password']!=null) {
+            $user['password'] = Hash::make($user['password']);
+            $messages []= 'Пароль для пользователя [' . $user['name'] . '] из [' . $user['class_name'] . '] обновлён.';
+        }
+        else {
+            unset($user['password']);
+        }
+        try {
+            DB::table('users')
+                ->where('id', '=', $id)
+                ->update($user);
+        } catch (\Exception $e) {
+            $errors []= 'Не удалось обновить данные пользователя ['.$user['name'].']. ПАРОЛЬ ТАКЖЕ НЕ СБРОШЕН. ' . $e->getMessage();
+        }
     }
-    catch (\Exception $e) {
-        echo 'Не удалось удалить результат прохождения теста'; // ну не удалось, так не удалось. не критично
-    }
-    // попробуем удалить пользователя
-    try {
-        DB::table('users')->where('id', '=', $id)->delete();
-        $messages []= 'Пользователь [' . $user['name'] . '] из [' . $user['class_name'] . '] и все его результаты удалены.';
-        continue; // так как пользователь удалён -- дальнейшие действия с ним бесполезны
-    }
-    catch (\Exception $e) {
-        $errors []= 'Не удалось удалить пользователя: ' . $e->getMessage();
-    }
-    }
-    if ($user['password']!=null) {
-        $user['password'] = Hash::make($user['password']);
-        $messages []= 'Пароль для пользователя [' . $user['name'] . '] из [' . $user['class_name'] . '] обновлён.';
-    }
-    else {
-        unset($user['password']);
-    }
-    try {
-        DB::table('users')
-            ->where('id', '=', $id)
-            ->update($user);
-    } catch (\Exception $e) {
-        $errors []= 'Не удалось обновить данные пользователя ['.$user['name'].']. ПАРОЛЬ ТАКЖЕ НЕ СБРОШЕН. ' . $e->getMessage();
-    }
-}
-return redirect()->back()->with('errors', $errors)->with('messages', $messages)->with('message', 'Изменения применены');
+    // TODO: доделать логи в PostController.php
+    return redirect()->back()->with('errors', $errors)->with('messages', $messages)->with('message', 'Изменения применены');
 }
 
     //удаляет результат прохождения теста

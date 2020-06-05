@@ -15,7 +15,7 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     protected static function mylog ($level, $message)
     {
-        $message = (Auth::check() ? Auth::user()->name : 'Аноним') . '['. $_SERVER["REMOTE_ADDR"]. '] ' . $message;
+        $message = (Auth::check() ? Auth::user()->name.'('.Auth::user()->email.')' : 'Аноним') . '['. $_SERVER["REMOTE_ADDR"]. '] ' . $message;
         if ($level === 'info') Log::info($message);
         if ($level === 'warning') Log::warning($message);
         if ($level === 'alert') Log::alert($message);
@@ -35,7 +35,6 @@ class Controller extends BaseController
         }
         return $sections;
     }
-
     // Вытягивает из БД уроки, относящиеся к определённому разделу
     protected function getLessons($sectionID)
     {
