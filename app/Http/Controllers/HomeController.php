@@ -33,10 +33,12 @@ class HomeController extends Controller
     // тестовая страница
     public function testPage()
     {
+        $this->mylog('info', 'Зашел на тестовую страницу 1');
         return view('testtesttest');
     }
     public function testPage2()
     {
+        $this->mylog('info', 'Зашел на тестовую страницу 2');
         return view('testtesttest2');
     }
 
@@ -71,7 +73,6 @@ class HomeController extends Controller
         }
         return $lessons;
     }
-
     // Находит конкретный раздел по его url
     private function getSection($sectionURL)
     {
@@ -86,7 +87,6 @@ class HomeController extends Controller
         }
         return $section;
     }
-
     // Находит конкретный урок по его url
     private function getLesson($lessonURL)
     {
@@ -102,7 +102,6 @@ class HomeController extends Controller
         }
         return $lesson;
     }
-
     // Находит тесты, относящиеся к уроку по ID урока
     private function getTests($lessonID)
     {
@@ -119,7 +118,6 @@ class HomeController extends Controller
         }
         return $tests;
     }
-
     // Получает тест по его URL
     private function getTest($testURL)
     {
@@ -136,7 +134,6 @@ class HomeController extends Controller
         }
         return $test;
     }
-
     // Получает роль пользователя
     private function getRole($user)
     {
@@ -171,14 +168,12 @@ class HomeController extends Controller
         if($sectionURL == 'main') {
             // КОНТЕНТ Главной страницы
             $lesson = $this->getLesson('glavnaya-stranica');
+            $this->mylog('info', 'Зашел на Главную страницу');
             return view('mainpage', compact('sections', 'section', 'lessons', 'lesson', 'user', 'role'));
         }
+        $this->mylog('info', 'Зашел на страницу раздела /' . $sectionURL);
         return view('sectionpage', compact('sections', 'section', 'lessons', 'user', 'role'));
     }
-
-
-
-
 
     // страница с каким-нибудь уроком (Например: 7 класс/ урок 1)
     // Route::get('/{section}/{lesson}', 'MainController@showLessonPage');
@@ -198,11 +193,9 @@ class HomeController extends Controller
         // ТЕСТЫ ТЕКУЩЕГО УРОКА
         $tests = $this->getTests($lesson->id);
         //dd($tests);
+        $this->mylog('info', 'Зашел на страницу урока: /' . $sectionURL . '/' . $lessonURL);
         return view('lessonpage', compact('sections', 'section', 'lessons', 'lesson', 'tests', 'user', 'role'));
     }
-
-
-
 
     // Страница Добавление урока
     public function addLessonPage($sectionURL)
@@ -214,9 +207,9 @@ class HomeController extends Controller
         $sections = $this->getSections();
         // для автозаполнения даты
         $date = date('Y-m-d');
+        $this->mylog('warning', 'Зашел на страницу добавления урока из раздела: /' . $sectionURL);
         return view('addlesson', compact('sections', 'sectionURL', 'date'));
     }
-
 
     // Редактирование существующего урока
     public function editLessonPage($sectionURL, $lessonURL)
@@ -228,6 +221,7 @@ class HomeController extends Controller
         $sections = $this->getSections();
         // КОНТЕНТ ТЕКУЩЕГО УРОКА
         $lesson = $this->getLesson($lessonURL);
+        $this->mylog('warning', 'Зашел на страницу редактирования урока: /' . $sectionURL . ' / ' . $lessonURL);
         return view('editlesson', compact('sections', 'lesson', 'sectionURL'));
     }
 
@@ -266,10 +260,11 @@ class HomeController extends Controller
                 ->with('error', 'Урок ['.$lesson->name.'] помечен как удалённый, но при попытке пометить закрепленные тесты как удалённые произошла ошибка. ' . $e->getMessage());
         }
 
-
+        $this->mylog('warning', 'Пометил урок: ' . $sectionURL . ' / ' . $lessonURL . ' удаленным');
         return redirect('/cabinet#map')
             ->with('message', 'Урок ['.$lesson->name.'] помечен как удалённый и не отображается на сайте. Его можно восстановить или уничтожить оконачательно.');
     }
+
     // Ставит пометку is_deleted как null
     public function restoreLesson($sectionURL, $lessonURL)
     {
@@ -288,6 +283,7 @@ class HomeController extends Controller
             return redirect('/'.$sectionURL.'/'.$lessonURL)
                 ->with('error', 'Произошла ошибка при восстановлении урока ['.$lesson->name.'] . ' . $e->getMessage());
         }
+        $this->mylog('warning', 'Восстановил урок: ' . $sectionURL . ' / ' . $lessonURL . '');
         return redirect('/cabinet#map')
             ->with('message', 'Урок ['.$lesson->name.'] успешно восстановлен!');
     }
@@ -310,12 +306,14 @@ class HomeController extends Controller
             return redirect('/cabinet#map')->with('error', 'При удалении урока ['.$lesson->name.'] из БД произошла ошибка. 
             Совет: сделайте так, чтобы за уроком не было закреплено ни одного теста. Это можно сделать, удалив тест целиком, или, закрепив его за другим уроком.');
         }
+        $this->mylog('alert', 'Удалил урок: ' . $sectionURL . ' / ' . $lessonURL . ' навсегда!');
         return redirect('/cabinet#map')->with('message', 'Урок ['.$lesson->name.'] успешно уничтожен!');
     }
 
     // Страница добавления картинки на сайт
     public function addImgPage()
     {
+        $this->mylog('warning', 'Зашел на страницу загрузки картинок');
         $imgName = 'img_'. date('Y.m.d-H.i.s');
         return view('addimg', compact('imgName'));
     }
@@ -358,6 +356,7 @@ class HomeController extends Controller
         foreach ($questions_with_answers as $q_a) {
             $questions[$q_a->question][$q_a->answer_id]= ['answer' => $q_a->answer, 'is_valid' => $q_a->is_valid];
         }
+        $this->mylog('info', 'Зашел на страницу прохождения теста: /' . $sectionURL . '/' . $lessonURL . '/' . $testURL);
         return view('testpage', compact('sections', 'sectionURL', 'lesson', 'test', 'questions', 'user', 'role', 'testResult'));
     }
 
@@ -373,6 +372,7 @@ class HomeController extends Controller
             ->select('id', 'url')
             ->where('id', '=', $lesson->section_id)
             ->get()[0]->url;
+        $this->mylog('warning', 'Зашел на страницу добавления теста, со страницы урока: /' . $sectionURL . '/' . $lessonURL);
         return view('addtest', compact('lesson', 'sectionURL'));
     }
 
@@ -394,9 +394,11 @@ class HomeController extends Controller
             return redirect('/cabinet#map')
                 ->with('error', 'Произошла ошибка при попытке пометить тест ['.$test->name.'] удалённым. ' . $e->getMessage());
         }
+        $this->mylog('warning', 'Пометил тест: ' . $sectionURL . '/' . $lessonURL . '/' . $testURL . ' удаленным!');
         return redirect('/cabinet#map')
             ->with('message', 'Тест ['.$test->name.'] удалён, но не до конца. Вы можете восстановить его или добить окончательно в личном кабинете.');
     }
+
     // Ставит пометку is_deleted как null
     public function restoreTest($sectionURL, $lessonURL, $testURL)
     {
@@ -415,6 +417,7 @@ class HomeController extends Controller
             return redirect('/'.$sectionURL.'/'.$lessonURL.'/'.$testURL)
                 ->with('error', 'Произошла ошибка при восстановлении теста ['.$test->name.']. ' . $e->getMessage());
         }
+        $this->mylog('warning', 'Восстановил тест: ' . $sectionURL . '/' . $lessonURL . '/' . $testURL . '');
         return redirect('/cabinet#map')
             ->with('message', 'Тест ['.$test->name.'] успешно восстановлен!');
     }
@@ -470,7 +473,7 @@ class HomeController extends Controller
         catch (\Exception $e) {
             return redirect()->back()->with('error', 'При удалении теста ['.$test->name.'] из БД произошла ошибка. ' . $e->getMessage());
         }
-
+        $this->mylog('alert', 'Удалил тест: ' . $sectionURL . '/' . $lessonURL . '/' . $testURL . ' навсегда!');
         return redirect('/cabinet#map')->with('message', 'Тест ['.$test->name.'] успешно уничтожен!');
     }
 
@@ -499,6 +502,7 @@ class HomeController extends Controller
         // подготовим список всех уроков
         $section = $this->getSection($sectionURL);
         $lessons = DB::table('lessons')->select('id', 'name')->get();
+        $this->mylog('warning', 'Зашел на страницу редактирования теста: /' . $sectionURL . '/' . $lessonURL . '/' . $testURL . '');
         return view('edittest', compact( 'lessons','sectionURL', 'lesson', 'test', 'questions'));
     }
 
@@ -608,6 +612,7 @@ class HomeController extends Controller
                 ->where('is_deleted', '!=', null)
                 ->get();
             //dump('Зашел админ!', $user->name, $role);
+            $this->mylog('info', 'Зашел в личный кабинет администратора');
             return view('cabinet', compact( 'sections','user', 'users', 'role', 'roles', 'lessons', 'testResultsByTests', 'testResultsByUsers', 'deletedLessons', 'deletedTests'));
         }
 
@@ -635,7 +640,7 @@ class HomeController extends Controller
                 ->get();
 
             //dd($testResults);
-
+            $this->mylog('info', 'Зашел в личный кабинет ученика');
             return view('cabinetschoolar', compact( 'sections','user', 'role', 'testResults'));
         }
     }
