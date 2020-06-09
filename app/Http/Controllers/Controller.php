@@ -13,9 +13,24 @@ use Illuminate\Support\Facades\Log;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    protected static function mylog ($level, $message)
+    protected function mylog ($level, $message)
     {
-        $message = (Auth::check() ? Auth::user()->name.'('.Auth::user()->email.')' : 'Аноним') . '['. $_SERVER["REMOTE_ADDR"]. '] ' . $message;
+        if (Auth::check()) {
+            $user = Auth::user();
+            $role = $this->getRole($user);
+            $message =
+                $role->name . ', ' .
+                $user->class_name . ', '.
+                $user->name.
+                '('.$user->email.')' .
+                '['. $_SERVER["REMOTE_ADDR"]. '] ' .
+                $message;
+        }
+        else {
+            $message = 'Аноним' .
+                '['. $_SERVER["REMOTE_ADDR"]. '] ' .
+                $message;
+        }
         if ($level === 'info') Log::info($message);
         if ($level === 'warning') Log::warning($message);
         if ($level === 'alert') Log::alert($message);

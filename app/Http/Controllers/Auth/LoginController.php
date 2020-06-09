@@ -44,6 +44,7 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+        $this->mylog('info', 'Попытка войти в систему под email: ' . $request->email);
         session(['login_email' => $request->email]);
         if (Auth::attempt(['email'=>$request->email, 'password'=>$request->password], ($request->remember == 'on'))) {
             // Аутентификация успешна...
@@ -60,7 +61,7 @@ class LoginController extends Controller
             $this->mylog('info', 'Вошел в систему');
             return redirect('/main')->with('message', 'Вы вошли в систему как ['.$role->name.']. '.$role->description);
         }
-        $this->mylog('info', 'Попытался войти в систему под email: ' . $request->email);
+        $this->mylog('warning', 'Неправильный логин или пароль. Попытался войти в систему под email: ' . $request->email);
         return redirect('/login')->with('err_login', 'Неправильный логин или пароль');
     }
 

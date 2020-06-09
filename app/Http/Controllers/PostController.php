@@ -526,6 +526,7 @@ class PostController extends Controller
 // Получает на вход массив со всеми пользователями и проводит их апдейт
 public function editUsersPOST(Request $request)
 {
+    $this->mylog('warning', 'Произвел запрос на редактирование пользователей');
     $messages = [];
     $errors = [];
     $allFields = $request->all();
@@ -553,6 +554,7 @@ public function editUsersPOST(Request $request)
             // УДАЛЯЯ ПОЛЬЗОВАТЕЛЯ - УДАЛЯЕМ ВСЕ ЕГО РЕЗУЛЬТАТЫ
             try {
                 DB::table('test4_results')->where('user_id','=', $id)->delete();
+                $this->mylog('alert', 'Удалил результаты тестов для пользователя: '.$user['name'].'('.$user['email'].')');
             }
             catch (\Exception $e) {
                 echo 'Не удалось удалить результат прохождения теста'; // ну не удалось, так не удалось. не критично
@@ -561,6 +563,7 @@ public function editUsersPOST(Request $request)
             try {
                 DB::table('users')->where('id', '=', $id)->delete();
                 $messages []= 'Пользователь [' . $user['name'] . '] из [' . $user['class_name'] . '] и все его результаты удалены.';
+                $this->mylog('alert', 'Удалил пользователя: '. $user['name'] . ' из ' . $user['class_name']);
                 continue; // так как пользователь удалён -- дальнейшие действия с ним бесполезны
             }
             catch (\Exception $e) {
@@ -569,12 +572,20 @@ public function editUsersPOST(Request $request)
         }
         if ($user['password']!=null) {
             $user['password'] = Hash::make($user['password']);
+            $this->mylog('alert', 'Обновил пароль пользователя: '. $user['name'] . ' из ' . $user['class_name'].'. Новый пароль: '.$user['password']);
             $messages []= 'Пароль для пользователя [' . $user['name'] . '] из [' . $user['class_name'] . '] обновлён.';
         }
         else {
             unset($user['password']);
         }
         try {
+            // получим текущего пользователя, чтобы узнать, какие именно изменения будут записаны
+            DB::table('users')
+                ->where('id', '=', $id)
+                ->get()[0];
+            // TODO: доделать логгирование
+
+
             DB::table('users')
                 ->where('id', '=', $id)
                 ->update($user);

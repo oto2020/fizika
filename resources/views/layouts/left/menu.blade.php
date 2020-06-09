@@ -1,4 +1,4 @@
-<div name = "layouts.left.menu">
+<div name="layouts.left.menu">
     <!--Уроки!-->
     @if(count($lessons) == 0)
         Уроки пока не добавлены.
@@ -32,7 +32,8 @@
                 <ul class="navbar-nav mr-auto">
                     @foreach($tests as $test)
                         <li class="nav-item active">
-                            <a class="nav-link" href="/{{$section->url}}/{{$lesson->url}}/{{$test->url}}">Тест {{$counter}}
+                            <a class="nav-link"
+                               href="/{{$section->url}}/{{$lesson->url}}/{{$test->url}}">Тест {{$counter}}
                                 . {{$test->name}}</a>
                         </li>
                         <?php $counter++;?>
