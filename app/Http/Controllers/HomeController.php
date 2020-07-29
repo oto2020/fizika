@@ -82,9 +82,11 @@ class HomeController extends Controller
         $lesson = $this->getLesson($lessonURL);
         // ТЕСТЫ ТЕКУЩЕГО УРОКА
         $tests = $this->getTests($lesson->id);
-        //dd($tests);
+        // Комментарии к текущему уроку
+        $comments = $this-> getLessonComments($lesson->id);
+        dump('$comments', $comments);
         $this->mylog('info', 'Зашел на страницу урока: /' . $sectionURL . '/' . $lessonURL);
-        return view('lessonpage', compact('sections', 'section', 'lessons', 'lesson', 'tests', 'user', 'role'));
+        return view('lessonpage', compact('sections', 'section', 'lessons', 'lesson', 'tests', 'user', 'role', 'comments'));
     }
 
     // Страница Добавление урока

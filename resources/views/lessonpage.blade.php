@@ -96,35 +96,51 @@
                 </style>
 
                 <!--===================================================-->
-                <div class="media-block">
-                    <a class="media-left" href="#">
-                        <img class="img-circle img-sm" src="https://ui-avatars.com/api/?size=190&name=Максим+Смирнов&font-size=0.45&background=87cefa&color=fff&rounded=false" width="40px">
-                    </a>
-                    <div class="media-body">
+                @foreach ($comments as $comment)
+                    <div class="media-block">
+                        <a class="media-left" href="#">
+                            <img class="img-circle img-sm" src="https://ui-avatars.com/api/?size=190&name=Максим+Смирнов&font-size=0.45&background=87cefa&color=fff&rounded=false" width="40px">
+                        </a>
+                        <div class="media-body">
 
-                        <div class="mar-btm">
-                            <a href="#" class="btn-link text-semibold media-heading box-inline">Максим Смирнов</a>
-                            <p class="text-muted text-sm"> 15:35 - 19-06-2016</p>
+                            <div class="mar-btm">
+                                <a href="#" class="btn-link text-semibold media-heading box-inline">Максим Смирнов</a>
+                                <p class="text-muted text-sm"> 15:35 - 19-06-2016</p>
+                            </div>
+                            <p>Всем привет, это мой самый первый комментарий, пока что он статичен для всех страниц сайта.</p>
+                            <hr>
                         </div>
-                        <p>Всем привет, это мой самый первый комментарий, пока что он статичен для всех страниц сайта.</p>
-                        <hr>
                     </div>
-                </div>
+                @endforeach
+{{--                <div class="media-block">--}}
+{{--                    <a class="media-left" href="#">--}}
+{{--                        <img class="img-circle img-sm" src="https://ui-avatars.com/api/?size=190&name=Максим+Смирнов&font-size=0.45&background=87cefa&color=fff&rounded=false" width="40px">--}}
+{{--                    </a>--}}
+{{--                    <div class="media-body">--}}
 
-                <div class="media-block">
-                    <a class="media-left" href="#">
-                        <img class="img-circle img-sm" src="https://ui-avatars.com/api/?size=190&name=Николай+Прусикин&font-size=0.45&background=ffa07a&color=fff&rounded=false" width="40px">
-                    </a>
-                    <div class="media-body">
+{{--                        <div class="mar-btm">--}}
+{{--                            <a href="#" class="btn-link text-semibold media-heading box-inline">Максим Смирнов</a>--}}
+{{--                            <p class="text-muted text-sm"> 15:35 - 19-06-2016</p>--}}
+{{--                        </div>--}}
+{{--                        <p>Всем привет, это мой самый первый комментарий, пока что он статичен для всех страниц сайта.</p>--}}
+{{--                        <hr>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
-                        <div class="mar-btm">
-                            <a href="#" class="btn-link text-semibold media-heading box-inline">Николай Прусикин</a>
-                            <p class="text-muted text-sm"> 18:39 - 19-06-2016</p>
-                        </div>
-                        <p>Секция с комментариями для сайта с подключенным Bootstrap!!!</p>
-                        <hr>
-                    </div>
-                </div>
+{{--                <div class="media-block">--}}
+{{--                    <a class="media-left" href="#">--}}
+{{--                        <img class="img-circle img-sm" src="https://ui-avatars.com/api/?size=190&name=Николай+Прусикин&font-size=0.45&background=ffa07a&color=fff&rounded=false" width="40px">--}}
+{{--                    </a>--}}
+{{--                    <div class="media-body">--}}
+
+{{--                        <div class="mar-btm">--}}
+{{--                            <a href="#" class="btn-link text-semibold media-heading box-inline">Николай Прусикин</a>--}}
+{{--                            <p class="text-muted text-sm"> 18:39 - 19-06-2016</p>--}}
+{{--                        </div>--}}
+{{--                        <p>Секция с комментариями для сайта с подключенным Bootstrap!!!</p>--}}
+{{--                        <hr>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
                 <!--===================================================-->
                 <div class="col-md-12">
                     <div class="panel">

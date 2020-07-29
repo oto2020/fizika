@@ -142,4 +142,29 @@ class Controller extends BaseController
         }
         return $role;
     }
+
+    protected function getLessonComments($lessonId)
+    {
+        try {
+            $comments = DB::table('lesson_comments')
+                //  вторая присоединяемая таблица,  поле id из первой таблицы,     =            поле question_id из второй таблицы
+                ->join('users', 'lesson_comments.user_id', '=', 'users.id' )
+                ->select('lesson_comments.user_id as user_id',
+                    'lesson_comments.lesson_id as lesson_id',
+                    'lesson_comments.content as comment_content',
+                    'lesson_comments.datetime as comment_datetime',
+                    'users.name as user_name',
+                    'users.class_name as user_class_name',
+                    'users.created_at as user_created_at',
+                    'users.avatar_src as avatar_src'
+                    )
+                ->where('lesson_comments.lesson_id', '=', $lessonId)
+                ->get();
+        }
+        catch (\Exception $e) {
+            $comments = null;
+            // тут мы не приостанавливаем выполнение страницы. считаем, что если $comments=null, значит комментов нет.
+        }
+        return $comments;
+    }
 }
