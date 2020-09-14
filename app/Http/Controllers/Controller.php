@@ -143,6 +143,7 @@ class Controller extends BaseController
         return $role;
     }
 
+    // возвращает комментарии к уроку и информацию о пользователе
     protected function getLessonComments($lessonId)
     {
         try {

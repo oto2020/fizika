@@ -75,43 +75,27 @@
                 <br>
 
 
-                <style>
-                    .img-sm {
-                        width: 46px;
-                        height: 46px;
-                    }
-                    .media-block .media-left {
-                        display: block;
-                        float: left
-                    }
-                    .media-block .media-right {
-                        float: right
-                    }
-                    .media-block .media-body {
-                        display: block;
-                        overflow: hidden;
-                        width: auto;
-                        margin-left:60px;
-                    }
-                </style>
+
 
                 <!--===================================================-->
+                @if ($comments !== null)
                 @foreach ($comments as $comment)
                     <div class="media-block">
                         <a class="media-left" href="#">
-                            <img class="img-circle img-sm" src="https://ui-avatars.com/api/?size=190&name=Максим+Смирнов&font-size=0.45&background=87cefa&color=fff&rounded=false" width="40px">
+                            <img class="img-circle img-sm" src="{{$comment->avatar_src}}" width="40px">
                         </a>
                         <div class="media-body">
 
                             <div class="mar-btm">
-                                <a href="#" class="btn-link text-semibold media-heading box-inline">Максим Смирнов</a>
-                                <p class="text-muted text-sm"> 15:35 - 19-06-2016</p>
+                                <a href="#" class="btn-link text-semibold media-heading box-inline">{{$comment->user_name}}</a>
+                                <p class="text-muted text-sm"> {{$comment->comment_datetime}}</p>
                             </div>
-                            <p>Всем привет, это мой самый первый комментарий, пока что он статичен для всех страниц сайта.</p>
+                            <p>{{$comment->comment_content}}</p>
                             <hr>
                         </div>
                     </div>
                 @endforeach
+                @endif
 {{--                <div class="media-block">--}}
 {{--                    <a class="media-left" href="#">--}}
 {{--                        <img class="img-circle img-sm" src="https://ui-avatars.com/api/?size=190&name=Максим+Смирнов&font-size=0.45&background=87cefa&color=fff&rounded=false" width="40px">--}}
