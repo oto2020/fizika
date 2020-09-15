@@ -38,6 +38,10 @@ class Controller extends BaseController
         if ($level === 'alert') Log::alert($message);
     }
 
+    protected function getUser()
+    {
+        return Auth::user();
+    }
     // Вытягивает из БД разделы сайта
     protected function getSections()
     {
@@ -175,26 +179,26 @@ class Controller extends BaseController
 
 
     // генерирует и сохраняет аватарку пользователя. Возвращает путь к урлу
-    protected function generateSaveAvatar($user)
+    protected function generateSaveAvatar($userId, $userName)
     {
         // генерируем случайный цвет из трёх частей
         $backColor = str_pad( dechex( mt_rand( 0, 200 ) ), 2, '0', STR_PAD_LEFT)
             . str_pad( dechex( mt_rand( 0, 200 ) ), 2, '0', STR_PAD_LEFT)
             . str_pad( dechex( mt_rand( 0, 200 ) ), 2, '0', STR_PAD_LEFT);
         // формируем url-запрос
-        $url = 'https://ui-avatars.com/api/?size=1000&font-size=0.45&color=fff&rounded=false&name='.$user->name.'&background='.$backColor;
+        $url = 'https://ui-avatars.com/api/?size=300&font-size=0.45&color=fff&rounded=false&name='.$userName.'&background='.$backColor;
         // сохранение файла на диск
         $contents = file_get_contents($url);
-        Storage::put('/public/img/' . 'avatar_' . $user->name . '.png', $contents);
+        Storage::put('/public/img/' . 'avatar_' . $userName . '.png', $contents);
         //echo '/storage/img/avatar_' . $user->name . '.png';
 
         // попробуем обновить запись avatar_src у юзера
         try {
             DB::table('users')
-                ->where('id', '=', $user->id)
+                ->where('id', '=', $userId)
                 ->update(
                     [
-                        'avatar_src' => '/storage/img/' . 'avatar_' . $user->name . '.png',
+                        'avatar_src' => '/storage/img/' . 'avatar_' . $userName . '.png',
                     ]);
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'При обновлении аватарки пользователя произошла ошибка. ' . $e->getMessage());

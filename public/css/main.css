@@ -144,6 +144,7 @@ body {
 
 /*аватарка в блоке auth*/
 .img-user-avatar-on-top-menu {
+    height:50px;
     width: 50px;
     border-radius: 30px;
 }

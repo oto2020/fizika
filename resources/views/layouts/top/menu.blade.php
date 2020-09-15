@@ -16,7 +16,12 @@
             <tr>
                <!--АВА ПОЛЬЗОВАТЕЛЯ 70px-->
                 <td style="width:70px;">
-                    <img class="img-user-avatar-on-top-menu" src="{{$user->avatar_src}}">
+                    <form method="post" action="/reload_avatar.php">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name = "userId" value="{{$user->id}}">
+                        <input type="hidden" name = "userName" value="{{$user->name}}">
+                        <input type="image" id="img" class="img-user-avatar-on-top-menu" src="{{$user->avatar_src}}">
+                    </form>
                 </td>
                 <!--ИМЯ ПОЛЬЗОВАТЕЛЯ + РОЛЬ-->
                 <td id="user_block">
@@ -45,6 +50,11 @@
     </div>
 
     <script>
+        // анимация Аватарки пользователя
+        let img = document.getElementById("img");
+        img.addEventListener("mouseover", function(e){img.src = "/storage/img/avatar_reload_1.gif"}); //if(e.ctrlKey)
+        img.addEventListener("mouseleave", function(){img.src = "{{$user->avatar_src}}"});
+
         // анимация кнопки "Выход"
         let imgExit = document.getElementById("img_exit");
         imgExit.addEventListener("mouseenter", function(){imgExit.src = "/storage/img/exit_button_action_1.png"});

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 class PostController extends Controller
 {
@@ -666,6 +667,17 @@ public function editUsersPOST(Request $request)
         }
 
         return redirect('/cabinet')->with('messages', $messages)->with('errors', $errors);
+    }
+
+    public function reloadAvatar (Request $request)
+    {
+        $last_page = URL::previous();
+        try {
+            $this->generateSaveAvatar($request->userId, $request->userName);
+        } catch (\Exception $e) {
+            return redirect($last_page)->with('error', 'Не удалось обновить аватарку. '); $e->getMessage();
+        }
+        return redirect($last_page)->with('message', 'Аватарка обновлена. Если изменения не заметны нажмите Ctrl+F5');
     }
 }
 

@@ -86,7 +86,8 @@ Route::get('/{sectionURL}/{lessonURL}', 'HomeController@showLessonPage');
 Route::get('/{sectionURL}/{lessonURL}/{testURL}', 'HomeController@showTestPage');
 Route::post('/{testURL}/verificate_test.php', 'PostController@verificateTest');
 
-
+// обновление аватарки
+Route::post('/reload_avatar.php', 'PostController@reloadAvatar');
 
 
 

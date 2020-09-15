@@ -143,7 +143,7 @@ class RegisterController extends Controller
                 ->where('id','=', DB::table('users')->max('id'))
                 ->get()[0];
             // задаем ему аву
-            $this->generateSaveAvatar($user);
+            $this->generateSaveAvatar($user->id, $user->name);
         }
         catch (\Exception $e) {
             return redirect()->to('/login')->with('err_login', 'Регистрация прошла успешно, но произошла ошибка при формировании аватарки.' . $e->getMessage());
