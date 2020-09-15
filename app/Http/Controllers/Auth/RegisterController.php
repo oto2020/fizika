@@ -117,6 +117,7 @@ class RegisterController extends Controller
         }
 
 
+
         $userArray = [
             'name' => $request->name,
             'email' => $request->email,
@@ -129,11 +130,28 @@ class RegisterController extends Controller
         //dd($userArray);
         //dd('2020-05-19 15:37:52', date('Y-m-d H:i:s'));
         try {
-            DB::table('users')->insert($userArray);
-        }
+            DB::table('users')->insert($userArray);        }
         catch (\Exception $e) {
             return back()->with('err_register', 'Обратитесь к администратору. Произошла ошибка на сайте во время регистрации: ' . $e->getMessage());
         }
+
+        // ДОБАВИМ АВУ
+        try{
+            // последний добавленный пользователь
+            $user = DB::table('users')
+                ->select('id', 'name')
+                ->where('id','=', DB::table('users')->max('id'))
+                ->get()[0];
+            // задаем ему аву
+            $this->generateSaveAvatar($user);
+        }
+        catch (\Exception $e) {
+            return redirect()->to('/login')->with('err_login', 'Регистрация прошла успешно, но произошла ошибка при формировании аватарки.' . $e->getMessage());
+        }
+
+
+
+
 
         //после успешной регистрации нас перебросит на страничку входа, и логин будет уже заполнен. мелочь, а приятно
         session(['login_email' => $request->email]);

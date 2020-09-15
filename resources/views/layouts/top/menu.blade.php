@@ -53,8 +53,14 @@
         // анимация при наведении на область пользователя в верхнем меню
         let userBlock = document.getElementById("user_block");
         let roleBlock = document.getElementById("role_block");
-        userBlock.addEventListener("mouseenter", function(){userBlock.style.cursor="pointer";roleBlock.innerHTML="<font color=\"white\">&#9733; [личный кабинет]</font>"});
-        userBlock.addEventListener("mouseleave", function(){roleBlock.innerHTML="[{{$role->name}}: {{$user->class_name}}]"});
+        userBlock.addEventListener("mouseenter", function(){
+            userBlock.style.cursor="pointer";
+            // для сохранения ширины
+            let tmp = userBlock.offsetWidth;
+            roleBlock.innerHTML="<font color=\"white\">&#9733; [личный кабинет]</font>";
+            userBlock.style.width = tmp;
+        });
+        userBlock.addEventListener("mouseleave", function(){roleBlock.innerHTML="[{{$role->name}}: {{$user->class_name}}]";});
         userBlock.addEventListener("mouseup", function(){document.location.href="/cabinet"});
     </script>
     @endif

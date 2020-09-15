@@ -49,8 +49,6 @@ class HomeController extends Controller
         $user = Auth::user();
         $role = $this->getRole($user);
 
-        $this->generateSaveAvatar($user);
-
         // ДЛЯ ВЕРХНЕГО МЕНЮ -- СПИСОК РАЗДЕЛОВ (ГЛАВНАЯ, 7 КЛАСС, 8 КЛАСС И ТД,)
         $sections = $this->getSections();
         // Текущий раздел
