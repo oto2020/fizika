@@ -142,3 +142,8 @@ body {
     margin-left:60px;
 }
 
+/*аватарка в блоке auth*/
+.img-user-avatar-on-top-menu {
+    width: 50px;
+    border-radius: 30px;
+}

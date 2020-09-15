@@ -78,7 +78,7 @@
 
 
                 <!--===================================================-->
-                @if ($comments !== null)
+
                 @foreach ($comments as $comment)
                     <div class="media-block">
                         <a class="media-left" href="#">
@@ -95,7 +95,7 @@
                         </div>
                     </div>
                 @endforeach
-                @endif
+
 {{--                <div class="media-block">--}}
 {{--                    <a class="media-left" href="#">--}}
 {{--                        <img class="img-circle img-sm" src="https://ui-avatars.com/api/?size=190&name=Максим+Смирнов&font-size=0.45&background=87cefa&color=fff&rounded=false" width="40px">--}}

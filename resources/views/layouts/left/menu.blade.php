@@ -1,4 +1,5 @@
 <div name="layouts.left.menu">
+    <hr>
     <!--Уроки!-->
     @if(count($lessons) == 0)
         Уроки пока не добавлены.

@@ -25,17 +25,5 @@
         </div>
         <br>
 
-    @else
-        <hr>
-        <h5>{{$user->name}}</h5>
-        <div class="liteTooltip" >
-            <h6>
-                {{$role->name}}
-            </h6>
-        </div>
-        <a href="/cabinet">&#9733; [личный кабинет]</a>
-        <br>
-        <a href="/logout" onclick="return confirm ('Точно выйти?')">&crarr; выйти</a>
-        <hr>
     @endif
 </div>
