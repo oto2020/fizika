@@ -31,14 +31,8 @@
     @include('layouts.top.menu')
     <!--ВСЁ, ЧТО ПОСЛЕ ВЕРХНЕГО МЕНЮ!-->
         <div class="row">
-            <!-- ЛЕВОЕ МЕНЮ !-->
-            <div class="col-2">
-                @include('layouts.left.auth')
-            </div>
-            <!-- КОНЕЦ ЛЕВОГО МЕНЮ!-->
-
             <!--Содержимое страницы!-->
-            <div class="col-10">
+            <div class="col-12">
                 <p>
                 <h1>Личный кабинет</h1>
                 </p>
