@@ -48,7 +48,7 @@
             </div>
         </div>
     </div>
-
+v
     <script>
         // анимация Аватарки пользователя
         let img = document.getElementById("img");
