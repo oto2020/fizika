@@ -11,6 +11,7 @@
                 <thead class="">
                 <tr>
                     <th>#</th>
+                    <th>AVA</th>
                     <th>ФИО</th>
                     <th>E-mail</th>
                     <th>Класс</th>
@@ -24,8 +25,29 @@
                 @foreach ($class_users as $class_user)
                     <tr>
                         <div class="form-group">
-                            <td name="id|{{$class_user->id}}">{{$class_user->id}} </td>
+                            <td>{{$class_user->id}} </td>
                         </div>
+                        <div class="form-group">
+                            <td>
+                                <img id="ava_reload_{{$class_user->id}}" class="img-user-avatar-on-cabinet" src="{{$class_user->avatar_src}}">
+                                <input id="checkbox_reload_{{$class_user->id}}" name="reload_avatar|{{$class_user->id}}" id="reload_avatar|{{$class_user->id}}" type="checkbox" style="display:none; width:30px; height:30px" class="form-control">
+                            </td>
+                            <script>
+                                //  текущий объект img изображение авы
+                                let ava_{{$class_user->id}} = document.getElementById("ava_reload_{{$class_user->id}}");
+                                // скрытый чекбокс по сбросу аватарки
+                                let checkbox_{{$class_user->id}} = document.getElementById("checkbox_reload_{{$class_user->id}}");
+                                // при наведении мыши на аву -- будет отображаться светлая гифка перезагрузки
+                                ava_{{$class_user->id}}.addEventListener("mouseenter", function(){ava_{{$class_user->id}}.src = "/storage/img/final_light_1.gif"});
+                                // когда мышь уходит -- отображается снова ава
+                                ava_{{$class_user->id}}.addEventListener("mouseleave", function(){ava_{{$class_user->id}}.src="{{$class_user->avatar_src}}"});
+                                // если кликнуть по аве -- на её месте отобразится чекбокс с проставленной галочкой
+                                ava_{{$class_user->id}}.addEventListener("mouseup", function(){ava_{{$class_user->id}}.style.display="none"; checkbox_{{$class_user->id}}.style.display="inline"; checkbox_{{$class_user->id}}.checked = true;});
+                                // если снять галочку с чекбокса -- вернется ава
+                                checkbox_{{$class_user->id}}.addEventListener("mouseup", function(){ava_{{$class_user->id}}.style.display="inline"; checkbox_{{$class_user->id}}.style.display="none";});
+                            </script>
+                        </div>
+
                         <div class="form-group">
                             <td><input name="name|{{$class_user->id}}" value="{{$class_user->name}}" type="text" class="form-control"></td>
                         </div>

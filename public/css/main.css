@@ -148,3 +148,11 @@ body {
     width: 50px;
     border-radius: 30px;
 }
+
+/*аватарка в таблице с пользователями в личном кабинете администратора cabinet*/
+.img-user-avatar-on-cabinet {
+    display:inline;
+    height:35px;
+    width: 35px;
+    border-radius: 30px;
+}

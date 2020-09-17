@@ -415,7 +415,7 @@ class HomeController extends Controller
 
 // контроль за другими пользователями
             $users_tmp = DB::table('users')
-                ->select('id', 'name', 'user_role_id', 'class_name', 'email', 'verified_at', 'password', 'created_at')
+                ->select('id', 'name', 'avatar_src', 'user_role_id', 'class_name', 'email', 'verified_at', 'password', 'created_at')
                 ->get();
             //dd($users_tmp);
             // сгруппируем пользователей по классам

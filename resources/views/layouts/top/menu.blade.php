@@ -38,17 +38,8 @@
                 </td>
             </tr>
         </table>
-
-        {{--роль, личный кабинет, выйти--}}
-        <div id="user_hidden_info" style="visibility: hidden">
-            <div class="liteTooltip" >
-                <h6>
-                    {{$role->name}}
-                </h6>
-            </div>
-        </div>
     </div>
-v
+
     <script>
         // анимация Аватарки пользователя
         let img = document.getElementById("img");

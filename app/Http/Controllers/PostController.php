@@ -546,11 +546,32 @@ public function editUsersPOST(Request $request)
         $users[$id] [$fieldName] = $fieldValue;
     }
 
+
     // Список всех ролей (чтобы пользователю можно было переназначить роль)
     $roles = DB::table('user_roles')
         ->get();
     // проведем апдейт пользователей:
     foreach ($users as $id => $user) {
+        // если нужно кому-то сбрасывать аватар
+        if (array_key_exists('reload_avatar', $user) && $user['reload_avatar'] == 'on') {
+            // ОБНОВИМ АВУ
+            try {
+                // текущий пользователь
+                $tmpUser = DB::table('users')
+                    ->select('id', 'name')
+                    ->where('id','=', $id)
+                    ->get()[0];
+                // генерим ему новую аву
+                $this->generateSaveAvatar($tmpUser->id, $tmpUser->name);
+            }
+            catch (\Exception $e) {
+                $errors[] = 'Произошла ошибка при переформировании аватарки пользователя: '.$user['name'].'('.$user['email'] .')' . $e->getMessage();
+                $this->mylog('error', 'Произошла ошибка при переформировании аватарки пользователя: '.$user['name'].'('.$user['email'].')'. $e->getMessage());
+            }
+            $messages[]= 'Сброшен аватар пользователя: '.$user['name'].'('.$user['email'].')';
+            $this->mylog('info', 'Сброшен аватар пользователя: '.$user['name'].'('.$user['email'].')');
+        }
+        unset($user['reload_avatar']);
         if (array_key_exists('delete_user', $user) && $user['delete_user'] == 'on') {
             // УДАЛЯЯ ПОЛЬЗОВАТЕЛЯ - УДАЛЯЕМ ВСЕ ЕГО РЕЗУЛЬТАТЫ
             try {
