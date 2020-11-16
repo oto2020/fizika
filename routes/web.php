@@ -12,9 +12,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-///// учимся работать с excel:
-Route::get('/openexcel', 'ExcelController@openExcelPage');
-Route::post('/openexcel', 'ExcelController@openExcelPOST');
 
 
 Auth::routes();
@@ -34,6 +31,9 @@ Route::get('/', function () {
 // Тестовая страница
 Route::get('/test', 'HomeController@testPage');
 Route::get('/test2', 'HomeController@testPage2');
+
+// генерация аватарки
+Route::get('/avatar_generator.php', 'Controller@avatarGenerate');
 
 // редактирование личных данных ученика
 Route::post('/change_user_info.php', 'PostController@changeUserInfoPOST');

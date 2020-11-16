@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -175,32 +177,42 @@ class Controller extends BaseController
     }
 
 
-    // генерирует и сохраняет аватарку пользователя. Возвращает путь к урлу
-    protected function generateSaveAvatar($userId, $userName)
-    {
-        // генерируем случайный цвет из трёх частей
-        $backColor = str_pad(dechex(mt_rand(0, 200)), 2, '0', STR_PAD_LEFT)
-            . str_pad(dechex(mt_rand(0, 200)), 2, '0', STR_PAD_LEFT)
-            . str_pad(dechex(mt_rand(0, 200)), 2, '0', STR_PAD_LEFT);
-        // формируем url-запрос
-        $url = 'https://ui-avatars.com/api/?size=300&font-size=0.45&color=fff&rounded=false&name=' . $userName . '&background=' . $backColor;
-        // сохранение файла на диск
-        $contents = file_get_contents($url);
-        Storage::put('/public/img/' . 'avatar_' . $userName . '.png', $contents);
-        //echo '/storage/img/avatar_' . $user->name . '.png';
+//    // генерирует и сохраняет аватарку пользователя. Возвращает путь к урлу
+//    protected function generateSaveAvatar($userId, $userName)
+//    {
+//        // генерируем случайный цвет из трёх частей
+//        $backColor = str_pad(dechex(mt_rand(0, 200)), 2, '0', STR_PAD_LEFT)
+//            . str_pad(dechex(mt_rand(0, 200)), 2, '0', STR_PAD_LEFT)
+//            . str_pad(dechex(mt_rand(0, 200)), 2, '0', STR_PAD_LEFT);
+//        // формируем url-запрос
+//        $url = 'https://ui-avatars.com/api/?size=300&font-size=0.45&color=fff&rounded=false&name=' . $userName . '&background=' . $backColor;
+//        // сохранение файла на диск
+//        $contents = file_get_contents($url);
+//        Storage::put('/public/img/' . 'avatar_' . $userName . '.png', $contents);
+//        //echo '/storage/img/avatar_' . $user->name . '.png';
+//
+//        // попробуем обновить запись avatar_src у юзера
+//        try {
+//            DB::table('users')
+//                ->where('id', '=', $userId)
+//                ->update(
+//                    [
+//                        'avatar_src' => '/storage/img/' . 'avatar_' . $userName . '.png',
+//                    ]);
+//        } catch (\Exception $e) {
+//            return redirect()->back()->with('error', 'При обновлении аватарки пользователя произошла ошибка. ' . $e->getMessage());
+//        }
+//        return true;
+//
+//    }
 
-        // попробуем обновить запись avatar_src у юзера
-        try {
-            DB::table('users')
-                ->where('id', '=', $userId)
-                ->update(
-                    [
-                        'avatar_src' => '/storage/img/' . 'avatar_' . $userName . '.png',
-                    ]);
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'При обновлении аватарки пользователя произошла ошибка. ' . $e->getMessage());
-        }
-        return true;
+// генерирует и сохраняет аватарку пользователя. Возвращает путь к урлу
+    protected function avatarGenerate(Request $request)
+    {
+        dump($request);
+
 
     }
+
+
 }
