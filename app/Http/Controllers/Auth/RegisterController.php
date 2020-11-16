@@ -82,8 +82,9 @@ class RegisterController extends Controller
 //
 //    }
 
-    public function register(Request $request) {
-        $this->mylog('warning', 'Отправил данные для регистрации: '. $request->name.', '.$request->class_name.', '. $request->email);
+    public function register(Request $request)
+    {
+        $this->mylog('warning', 'Отправил данные для регистрации: ' . $request->name . ', ' . $request->class_name . ', ' . $request->email);
 
         // запишем в сессию, чтобы было автозаполнение
         // чтобы например, при вводе неправильного пароля после перезагрузки страницы не пришлось заполнять все поля заново
@@ -117,45 +118,40 @@ class RegisterController extends Controller
         }
 
 
-
         $userArray = [
             'name' => $request->name,
             'email' => $request->email,
             'user_role_id' => 3, // неподтверждённый участник
             'password' => Hash::make($request->password),
             'class_name' => $request->class_name,
-            'created_at' =>  date('Y-m-d H:i:s'),
+            'created_at' => date('Y-m-d H:i:s'),
         ];
 
         //dd($userArray);
         //dd('2020-05-19 15:37:52', date('Y-m-d H:i:s'));
         try {
-            DB::table('users')->insert($userArray);        }
-        catch (\Exception $e) {
+            DB::table('users')->insert($userArray);
+        } catch (\Exception $e) {
             return back()->with('err_register', 'Обратитесь к администратору. Произошла ошибка на сайте во время регистрации: ' . $e->getMessage());
         }
 
         // ДОБАВИМ АВУ
-        try{
+        try {
             // последний добавленный пользователь
             $user = DB::table('users')
                 ->select('id', 'name')
-                ->where('id','=', DB::table('users')->max('id'))
+                ->where('id', '=', DB::table('users')->max('id'))
                 ->get()[0];
             // задаем ему аву
             $this->generateSaveAvatar($user->id, $user->name);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->to('/login')->with('err_login', 'Регистрация прошла успешно, но произошла ошибка при формировании аватарки.' . $e->getMessage());
         }
 
 
-
-
-
         //после успешной регистрации нас перебросит на страничку входа, и логин будет уже заполнен. мелочь, а приятно
         session(['login_email' => $request->email]);
-        $this->mylog('warning', 'Процесс регистрации прошел успешно для '.$request->name.', '.$request->class_name.', '. $request->email.'. Пароль: '.$request->password);
+        $this->mylog('warning', 'Процесс регистрации прошел успешно для ' . $request->name . ', ' . $request->class_name . ', ' . $request->email . '. Пароль: ' . $request->password);
         return redirect()->to('/login')->with('message', 'Вы успешно зарегистрированы. Email: \'' . $request->email . '\' Пароль: \'' . $request->password . '\'');
 
 

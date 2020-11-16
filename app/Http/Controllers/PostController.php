@@ -40,8 +40,8 @@ class PostController extends Controller
             DB::table('lessons')->insert($arrayToInsert);
         } // если вылетела ошибка
         catch (\Exception $exc) {
-            dd('При добавлении записи в БД произошла ошибка. '.$exc->getMessage());
-            return redirect()->back()->with('error', 'При добавлении записи в БД произошла ошибка. '.$exc->getMessage());
+            dd('При добавлении записи в БД произошла ошибка. ' . $exc->getMessage());
+            return redirect()->back()->with('error', 'При добавлении записи в БД произошла ошибка. ' . $exc->getMessage());
         }
         $this->mylog('warning', 'Добавил страницу: /' . $sectionURL . '/' . $request->url);
         return redirect('/' . $sectionURL . '/' . $request->url)->with('message', 'Страница успешно размещена!');
@@ -52,7 +52,7 @@ class PostController extends Controller
     {
         $lessonID = $request->id_from_database;
         $sectionID = $request->section;
-        $section = DB::table('sections')->where('id','=', $sectionID)->get()[0];
+        $section = DB::table('sections')->where('id', '=', $sectionID)->get()[0];
         // нужно помнить, что если мы переместим урок в другой раздел, то у урока и привязанных к нему тестах изменится full_url
         try {
             // проведём апдейт записи в таблице
@@ -69,9 +69,8 @@ class PostController extends Controller
                         'content' => $request->html_content,
                         'user' => $request->user,
                     ]);
-                }
-        catch (\Exception $e) {
-            return redirect()->back()->with('error', 'При обновлении записи БД произошла ошибка. '.$e->getMessage());
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'При обновлении записи БД произошла ошибка. ' . $e->getMessage());
         }
 
         // проведем апдейт full_url для привязанных к уроку тестов
@@ -81,8 +80,7 @@ class PostController extends Controller
             DB::table('test1_tests')
                 ->where('lesson_id', '=', $lessonID)
                 ->update(['full_url' => '/' . $section->url . '/' . $request->url . '/' . $test_url]);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             //return redirect()->back()->with('message', 'Страница успешно отредактирована! Но привязанные тесты не обновили свой full_url. Обновите привязанные тесты!');
         }
         $href = '/' . $sectionURL . '/' . $request->url;
@@ -103,9 +101,9 @@ class PostController extends Controller
                     $futureFileName = $request->img_future_name . '_' . $i . '.' . $file->getClientOriginalExtension();
                     Storage::putFileAs('/public/img/', $file, $futureFileName, 'public');
                     // отобразим сообщение об успешной загрузке файла
-                    echo '<hr>Файл '.$i.' [' . $futureFileName . '] успешно загружен!<br>';
+                    echo '<hr>Файл ' . $i . ' [' . $futureFileName . '] успешно загружен!<br>';
                     //echo htmlspecialchars('<img src="/storage/img/' . $futureFileName . '" class="img-fluid" alt="Картинка не найдена">');
-                    echo '<br><div id="img_'.$i.'"><img src="/storage/img/' . $futureFileName . '" class="img-fluid" width="150px" alt="Картинка не найдена"></div><br>';
+                    echo '<br><div id="img_' . $i . '"><img src="/storage/img/' . $futureFileName . '" class="img-fluid" width="150px" alt="Картинка не найдена"></div><br>';
 //                    echo '<textarea rows="2" cols="97" id="cont_' . $i . '"></textarea>';
 //                    echo '<script>document.getElementById("cont_' . $i . '").value = document.getElementById("img_'.$i.'").innerHTML;</script>';
                     //echo '<br>Скопируйте ссылку и добавьте изображение с помощью соответсвующей кнопки в CKEditor.';
@@ -113,13 +111,13 @@ class PostController extends Controller
                     echo '<textarea rows="2" cols="97" id="cont_' . $i . '">';
                     echo '/storage/img/' . $futureFileName;
                     echo '</textarea><br>';
-                    echo '<button onclick="copyToClipBoard_'.$i.'()">Копировать в буфер обмена</button>';
+                    echo '<button onclick="copyToClipBoard_' . $i . '()">Копировать в буфер обмена</button>';
 
                     // подключаем обработчик по клику на кнопку "Копировать в буфер обмена"
                     echo '
                     <script>
-                        function copyToClipBoard_'.$i.'() {
-                            let copyText = document.getElementById(\'cont_'.$i.'\');
+                        function copyToClipBoard_' . $i . '() {
+                            let copyText = document.getElementById(\'cont_' . $i . '\');
                             copyText.select();
                             document.execCommand("copy");
                             alert("Скопирована ссылка: " + copyText.value + "\n\nИспользуйте её как url при размещении изображения на сайте.");
@@ -184,15 +182,14 @@ class PostController extends Controller
                 [
                     'user_id' => $user->id,
                     'test_id' => $test->id,
-                    'user_name' =>$user->name,
+                    'user_name' => $user->name,
                     'point' => $point,
                     'details' => $json,
                     'datetime' => now(),
                 ]);
             $this->mylog('info', 'Завершил прохождение теста: ' . $test->full_url . ' С результатом: ' . $point);
             return redirect()->back()->with('message', 'Тест пройден, результат сохранён.');
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->back()->with('error', '!!! РЕЗУЛЬТАТЫ ТЕСТА НЕ СОХРАНЕНЫ  В БД! Ваш результат: ' . $point . '%');
         }
     }
@@ -210,8 +207,7 @@ class PostController extends Controller
         // Если id теста указан явно (в случае редактирования теста, где мы удалили его, а потом снова добавили) -- в этот id и запишем
         if (isset($request->test_id)) {
             $testID = $request->test_id;
-        }
-        else {
+        } else {
             $testID = DB::table('test1_tests')
                     ->select('id')
                     ->orderBy('id', 'desc')
@@ -346,8 +342,8 @@ class PostController extends Controller
             ->where('id', '=', $lesson->section_id)
             ->get()[0]->url;
 
-        $this->mylog('warning', 'Добавил тест: /'.$sectionURL.'/'.$lesson->url.'/'.$arr['url']);
-        return redirect('/'.$sectionURL.'/'.$lesson->url .'/'.$arr['url'])->with('message', 'Тест ['.$request->test_name.'] успешно сохранен!');
+        $this->mylog('warning', 'Добавил тест: /' . $sectionURL . '/' . $lesson->url . '/' . $arr['url']);
+        return redirect('/' . $sectionURL . '/' . $lesson->url . '/' . $arr['url'])->with('message', 'Тест [' . $request->test_name . '] успешно сохранен!');
     }
 
     // апдейт полей теста, удаление всех вопросов и ответов + перезалив оных (адищще)
@@ -419,18 +415,17 @@ class PostController extends Controller
             foreach ($questionsID as $questionID) {
                 DB::table('test2_questions')->where('id', '=', $questionID)->delete();
             }
-        }
-        catch (\Exception $e) {
-            return redirect()->back()->with('error', 'При удалении теста ['.$test->name.'] из БД произошла ошибка. ' . $e->getMessage());
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'При удалении теста [' . $test->name . '] из БД произошла ошибка. ' . $e->getMessage());
         }
 
 // ВОПРОСЫ И ОТВЕТЫ УДАЛЕНЫ. ТЕПЕРЬ НУЖНО ИХ ЗАЛИТЬ.
-    // ID поледнего вопроса (наименьший свободный ID)
+        // ID поледнего вопроса (наименьший свободный ID)
         $questionID = DB::table('test2_questions')
                 ->select('id')
                 ->orderBy('id', 'desc')
                 ->get()[0]->id + 1;
-    // ID поледнего ответа (наименьший свободный ID)
+        // ID поледнего ответа (наименьший свободный ID)
         $answerID = DB::table('test3_answers')
                 ->select('id')
                 ->orderBy('id', 'desc')
@@ -521,112 +516,107 @@ class PostController extends Controller
         }
         // ТАКИМИ ВОТ МУЧЕНИЯМИ ЗАПИСАНЫ НОВЫЕ ВОПРОСЫ И ОТВЕТЫ.
         $this->mylog('warning', 'Произвел редактирование теста: /' . $newLesson->full_url);
-        return redirect($newLesson->full_url . '/' . $arr['url'])->with('message', 'Тест ['.$test->name.'] успешно сохранен!');
+        return redirect($newLesson->full_url . '/' . $arr['url'])->with('message', 'Тест [' . $test->name . '] успешно сохранен!');
     }
 
 // Получает на вход массив со всеми пользователями и проводит их апдейт
-public function editUsersPOST(Request $request)
-{
-    $this->mylog('warning', 'Произвел запрос на редактирование пользователей');
-    $messages = [];
-    $errors = [];
-    $allFields = $request->all();
-    // отсекаем лишнее
-    unset($allFields['_token']);
+    public function editUsersPOST(Request $request)
+    {
+        $this->mylog('warning', 'Произвел запрос на редактирование пользователей');
+        $messages = [];
+        $errors = [];
+        $allFields = $request->all();
+        // отсекаем лишнее
+        unset($allFields['_token']);
 
-    // приведем массив к виду id => [$user]
-    $users = [];
-    // пока что имеем вид: "user_role_name|6" => "Администратор"
-    foreach ($allFields as $fieldNameID => $fieldValue) {
-        // разобьем запись типа "user_role_name|6" на две составляющие: имя поля и id
-        $tmp_arr = explode('|', $fieldNameID);
+        // приведем массив к виду id => [$user]
+        $users = [];
+        // пока что имеем вид: "user_role_name|6" => "Администратор"
+        foreach ($allFields as $fieldNameID => $fieldValue) {
+            // разобьем запись типа "user_role_name|6" на две составляющие: имя поля и id
+            $tmp_arr = explode('|', $fieldNameID);
 
-        $fieldName = $tmp_arr[0];
-        $id = $tmp_arr[1];
-        $users[$id] [$fieldName] = $fieldValue;
-    }
+            $fieldName = $tmp_arr[0];
+            $id = $tmp_arr[1];
+            $users[$id] [$fieldName] = $fieldValue;
+        }
 
 
-    // Список всех ролей (чтобы пользователю можно было переназначить роль)
-    $roles = DB::table('user_roles')
-        ->get();
-    // проведем апдейт пользователей:
-    foreach ($users as $id => $user) {
-        // если нужно кому-то сбрасывать аватар
-        if (array_key_exists('reload_avatar', $user) && $user['reload_avatar'] == 'on') {
-            // ОБНОВИМ АВУ
+        // Список всех ролей (чтобы пользователю можно было переназначить роль)
+        $roles = DB::table('user_roles')
+            ->get();
+        // проведем апдейт пользователей:
+        foreach ($users as $id => $user) {
+            // если нужно кому-то сбрасывать аватар
+            if (array_key_exists('reload_avatar', $user) && $user['reload_avatar'] == 'on') {
+                // ОБНОВИМ АВУ
+                try {
+                    // текущий пользователь
+                    $tmpUser = DB::table('users')
+                        ->select('id', 'name')
+                        ->where('id', '=', $id)
+                        ->get()[0];
+                    // генерим ему новую аву
+                    $this->generateSaveAvatar($tmpUser->id, $tmpUser->name);
+                } catch (\Exception $e) {
+                    $errors[] = 'Произошла ошибка при переформировании аватарки пользователя: ' . $user['name'] . '(' . $user['email'] . ')' . $e->getMessage();
+                    $this->mylog('error', 'Произошла ошибка при переформировании аватарки пользователя: ' . $user['name'] . '(' . $user['email'] . ')' . $e->getMessage());
+                }
+                $messages[] = 'Сброшен аватар пользователя: ' . $user['name'] . '(' . $user['email'] . ')';
+                $this->mylog('info', 'Сброшен аватар пользователя: ' . $user['name'] . '(' . $user['email'] . ')');
+            }
+            unset($user['reload_avatar']);
+            if (array_key_exists('delete_user', $user) && $user['delete_user'] == 'on') {
+                // УДАЛЯЯ ПОЛЬЗОВАТЕЛЯ - УДАЛЯЕМ ВСЕ ЕГО РЕЗУЛЬТАТЫ
+                try {
+                    DB::table('test4_results')->where('user_id', '=', $id)->delete();
+                    $this->mylog('alert', 'Удалил результаты тестов для пользователя: ' . $user['name'] . '(' . $user['email'] . ')');
+                } catch (\Exception $e) {
+                    echo 'Не удалось удалить результат прохождения теста'; // ну не удалось, так не удалось. не критично
+                }
+                // попробуем удалить пользователя
+                try {
+                    DB::table('users')->where('id', '=', $id)->delete();
+                    $messages [] = 'Пользователь [' . $user['name'] . '] из [' . $user['class_name'] . '] и все его результаты удалены.';
+                    $this->mylog('alert', 'Удалил пользователя: ' . $user['name'] . ' из ' . $user['class_name']);
+                    continue; // так как пользователь удалён -- дальнейшие действия с ним бесполезны
+                } catch (\Exception $e) {
+                    $errors [] = 'Не удалось удалить пользователя: ' . $e->getMessage();
+                }
+            }
+            if ($user['password'] != null) {
+                $user['password'] = Hash::make($user['password']);
+                $this->mylog('alert', 'Обновил пароль пользователя: ' . $user['name'] . ' из ' . $user['class_name'] . '. Новый пароль: ' . $user['password']);
+                $messages [] = 'Пароль для пользователя [' . $user['name'] . '] из [' . $user['class_name'] . '] обновлён.';
+            } else {
+                unset($user['password']);
+            }
             try {
-                // текущий пользователь
-                $tmpUser = DB::table('users')
-                    ->select('id', 'name')
-                    ->where('id','=', $id)
+                // получим текущего пользователя, чтобы узнать, какие именно изменения будут записаны
+                DB::table('users')
+                    ->where('id', '=', $id)
                     ->get()[0];
-                // генерим ему новую аву
-                $this->generateSaveAvatar($tmpUser->id, $tmpUser->name);
-            }
-            catch (\Exception $e) {
-                $errors[] = 'Произошла ошибка при переформировании аватарки пользователя: '.$user['name'].'('.$user['email'] .')' . $e->getMessage();
-                $this->mylog('error', 'Произошла ошибка при переформировании аватарки пользователя: '.$user['name'].'('.$user['email'].')'. $e->getMessage());
-            }
-            $messages[]= 'Сброшен аватар пользователя: '.$user['name'].'('.$user['email'].')';
-            $this->mylog('info', 'Сброшен аватар пользователя: '.$user['name'].'('.$user['email'].')');
-        }
-        unset($user['reload_avatar']);
-        if (array_key_exists('delete_user', $user) && $user['delete_user'] == 'on') {
-            // УДАЛЯЯ ПОЛЬЗОВАТЕЛЯ - УДАЛЯЕМ ВСЕ ЕГО РЕЗУЛЬТАТЫ
-            try {
-                DB::table('test4_results')->where('user_id','=', $id)->delete();
-                $this->mylog('alert', 'Удалил результаты тестов для пользователя: '.$user['name'].'('.$user['email'].')');
-            }
-            catch (\Exception $e) {
-                echo 'Не удалось удалить результат прохождения теста'; // ну не удалось, так не удалось. не критично
-            }
-            // попробуем удалить пользователя
-            try {
-                DB::table('users')->where('id', '=', $id)->delete();
-                $messages []= 'Пользователь [' . $user['name'] . '] из [' . $user['class_name'] . '] и все его результаты удалены.';
-                $this->mylog('alert', 'Удалил пользователя: '. $user['name'] . ' из ' . $user['class_name']);
-                continue; // так как пользователь удалён -- дальнейшие действия с ним бесполезны
-            }
-            catch (\Exception $e) {
-                $errors []= 'Не удалось удалить пользователя: ' . $e->getMessage();
-            }
-        }
-        if ($user['password']!=null) {
-            $user['password'] = Hash::make($user['password']);
-            $this->mylog('alert', 'Обновил пароль пользователя: '. $user['name'] . ' из ' . $user['class_name'].'. Новый пароль: '.$user['password']);
-            $messages []= 'Пароль для пользователя [' . $user['name'] . '] из [' . $user['class_name'] . '] обновлён.';
-        }
-        else {
-            unset($user['password']);
-        }
-        try {
-            // получим текущего пользователя, чтобы узнать, какие именно изменения будут записаны
-            DB::table('users')
-                ->where('id', '=', $id)
-                ->get()[0];
-            // TODO: доделать логгирование
+                // TODO: доделать логгирование
 
 
-            DB::table('users')
-                ->where('id', '=', $id)
-                ->update($user);
-        } catch (\Exception $e) {
-            $errors []= 'Не удалось обновить данные пользователя ['.$user['name'].']. ПАРОЛЬ ТАКЖЕ НЕ СБРОШЕН. ' . $e->getMessage();
+                DB::table('users')
+                    ->where('id', '=', $id)
+                    ->update($user);
+            } catch (\Exception $e) {
+                $errors [] = 'Не удалось обновить данные пользователя [' . $user['name'] . ']. ПАРОЛЬ ТАКЖЕ НЕ СБРОШЕН. ' . $e->getMessage();
+            }
         }
+        // TODO: доделать логи в PostController.php
+        return redirect()->back()->with('errors', $errors)->with('messages', $messages)->with('message', 'Изменения применены');
     }
-    // TODO: доделать логи в PostController.php
-    return redirect()->back()->with('errors', $errors)->with('messages', $messages)->with('message', 'Изменения применены');
-}
 
     //удаляет результат прохождения теста
-    public function deleteTestResultPOST (Request $request)
+    public function deleteTestResultPOST(Request $request)
     {
         try {
-            DB::table('test4_results')->where('id','=', $request->id)->delete();
+            DB::table('test4_results')->where('id', '=', $request->id)->delete();
             return redirect('/cabinet#' . $request->redirect_to)->with('message', 'Результат прохождения теста успешно удалён. ');
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Не удалось удалить результат прохождения теста. ' . $e->getMessage());
         }
     }
@@ -636,7 +626,7 @@ public function editUsersPOST(Request $request)
     {
         $user = Auth::user();
         $messages = [];
-        $errors =[];
+        $errors = [];
 
         // проведем апдейт емейла:
         if ($request->email != null) {
@@ -650,12 +640,11 @@ public function editUsersPOST(Request $request)
                     ->select('email', 'id')
                     ->where('email', '=', $request->email)
                     ->get()[0];
-            }
-            catch (\Exception $e) {
+            } catch (\Exception $e) {
                 $userWithAnalogEmail = null;
             }
             // если такой емаил уже есть в системе и занят он не текущим пользователем
-            if ($userWithAnalogEmail!==null && $userWithAnalogEmail->id !== $user->id) {
+            if ($userWithAnalogEmail !== null && $userWithAnalogEmail->id !== $user->id) {
                 return back()->with('error', 'Выбранный email занят');
             }
             // попробуем обновить запись в таблице
@@ -663,9 +652,9 @@ public function editUsersPOST(Request $request)
                 DB::table('users')
                     ->where('id', '=', $user->id)
                     ->update(['email' => $request->email]);
-                $messages []= 'Ваш новый email: '.$request->email;
+                $messages [] = 'Ваш новый email: ' . $request->email;
             } catch (\Exception $e) {
-                $errors []= 'Не удалось обновить email пользователя ['.$user->name.']. Обратитесь к администратору. ' . $e->getMessage();
+                $errors [] = 'Не удалось обновить email пользователя [' . $user->name . ']. Обратитесь к администратору. ' . $e->getMessage();
             }
         }
 
@@ -681,22 +670,23 @@ public function editUsersPOST(Request $request)
                 DB::table('users')
                     ->where('id', '=', $user->id)
                     ->update(['password' => $password]);
-                $messages []= 'Ваш новый пароль: '.$request->password;
+                $messages [] = 'Ваш новый пароль: ' . $request->password;
             } catch (\Exception $e) {
-                $errors []= 'Не удалось обновить пароль пользователя ['.$user->name.']. Обратитесь к администратору. ' . $e->getMessage();
+                $errors [] = 'Не удалось обновить пароль пользователя [' . $user->name . ']. Обратитесь к администратору. ' . $e->getMessage();
             }
         }
 
         return redirect('/cabinet')->with('messages', $messages)->with('errors', $errors);
     }
 
-    public function reloadAvatar (Request $request)
+    public function reloadAvatar(Request $request)
     {
         $last_page = URL::previous();
         try {
             $this->generateSaveAvatar($request->userId, $request->userName);
         } catch (\Exception $e) {
-            return redirect($last_page)->with('error', 'Не удалось обновить аватарку. '); $e->getMessage();
+            return redirect($last_page)->with('error', 'Не удалось обновить аватарку. ');
+            $e->getMessage();
         }
         return redirect($last_page)->with('message', 'Аватарка обновлена. Если изменения не заметны нажмите Ctrl+F5');
     }

@@ -36,6 +36,7 @@ class HomeController extends Controller
         $this->mylog('info', 'Зашел на тестовую страницу 1');
         return view('testtesttest');
     }
+
     public function testPage2()
     {
         $this->mylog('info', 'Зашел на тестовую страницу 2');
@@ -55,7 +56,7 @@ class HomeController extends Controller
         $section = $this->getSection($sectionURL);
         // Уроки текущего раздела
         $lessons = $this->getLessons($section->id);
-        if($sectionURL == 'main') {
+        if ($sectionURL == 'main') {
             // КОНТЕНТ Главной страницы
             $lesson = $this->getLesson('glavnaya-stranica');
             $this->mylog('info', 'Зашел на Главную страницу');
@@ -83,8 +84,7 @@ class HomeController extends Controller
         // ТЕСТЫ ТЕКУЩЕГО УРОКА
         $tests = $this->getTests($lesson->id);
         // Комментарии к текущему уроку
-        $comments = $this-> getLessonComments($lesson->id);
-        dump('$comments', $comments);
+        $comments = $this->getLessonComments($lesson->id);
         $this->mylog('info', 'Зашел на страницу урока: /' . $sectionURL . '/' . $lessonURL);
         return view('lessonpage', compact('sections', 'section', 'lessons', 'lesson', 'tests', 'user', 'role', 'comments'));
     }
@@ -136,7 +136,7 @@ class HomeController extends Controller
                     ]);
         } catch (\Exception $e) {
             return redirect('/cabinet#map')
-                ->with('error', 'Произошла ошибка при попытке пометить урок ['.$lesson->name.'] удалённым. ' . $e->getMessage());
+                ->with('error', 'Произошла ошибка при попытке пометить урок [' . $lesson->name . '] удалённым. ' . $e->getMessage());
         }
 
         // все закрепленные за уроком тесты также отмечаются, как удалённые
@@ -149,12 +149,12 @@ class HomeController extends Controller
                     ]);
         } catch (\Exception $e) {
             return redirect('/cabinet#map')
-                ->with('error', 'Урок ['.$lesson->name.'] помечен как удалённый, но при попытке пометить закрепленные тесты как удалённые произошла ошибка. ' . $e->getMessage());
+                ->with('error', 'Урок [' . $lesson->name . '] помечен как удалённый, но при попытке пометить закрепленные тесты как удалённые произошла ошибка. ' . $e->getMessage());
         }
 
         $this->mylog('warning', 'Пометил урок: ' . $sectionURL . ' / ' . $lessonURL . ' удаленным');
         return redirect('/cabinet#map')
-            ->with('message', 'Урок ['.$lesson->name.'] помечен как удалённый и не отображается на сайте. Его можно восстановить или уничтожить оконачательно.');
+            ->with('message', 'Урок [' . $lesson->name . '] помечен как удалённый и не отображается на сайте. Его можно восстановить или уничтожить оконачательно.');
     }
 
     // Ставит пометку is_deleted как null
@@ -172,12 +172,12 @@ class HomeController extends Controller
                         'is_deleted' => null, // восстановили
                     ]);
         } catch (\Exception $e) {
-            return redirect('/'.$sectionURL.'/'.$lessonURL)
-                ->with('error', 'Произошла ошибка при восстановлении урока ['.$lesson->name.'] . ' . $e->getMessage());
+            return redirect('/' . $sectionURL . '/' . $lessonURL)
+                ->with('error', 'Произошла ошибка при восстановлении урока [' . $lesson->name . '] . ' . $e->getMessage());
         }
         $this->mylog('warning', 'Восстановил урок: ' . $sectionURL . ' / ' . $lessonURL . '');
         return redirect('/cabinet#map')
-            ->with('message', 'Урок ['.$lesson->name.'] успешно восстановлен!');
+            ->with('message', 'Урок [' . $lesson->name . '] успешно восстановлен!');
     }
 
     // удалить урок из БД
@@ -192,21 +192,20 @@ class HomeController extends Controller
         }
         // удалим запись из БД
         try {
-            DB::table('lessons')->where('url', '=',  $lessonURL)->delete();
-        }
-        catch (\Exception $e) {
-            return redirect('/cabinet#map')->with('error', 'При удалении урока ['.$lesson->name.'] из БД произошла ошибка. 
+            DB::table('lessons')->where('url', '=', $lessonURL)->delete();
+        } catch (\Exception $e) {
+            return redirect('/cabinet#map')->with('error', 'При удалении урока [' . $lesson->name . '] из БД произошла ошибка. 
             Совет: сделайте так, чтобы за уроком не было закреплено ни одного теста. Это можно сделать, удалив тест целиком, или, закрепив его за другим уроком.');
         }
         $this->mylog('alert', 'Удалил урок: ' . $sectionURL . ' / ' . $lessonURL . ' навсегда!');
-        return redirect('/cabinet#map')->with('message', 'Урок ['.$lesson->name.'] успешно уничтожен!');
+        return redirect('/cabinet#map')->with('message', 'Урок [' . $lesson->name . '] успешно уничтожен!');
     }
 
     // Страница добавления картинки на сайт
     public function addImgPage()
     {
         $this->mylog('warning', 'Зашел на страницу загрузки картинок');
-        $imgName = 'img_'. date('Y.m.d-H.i.s');
+        $imgName = 'img_' . date('Y.m.d-H.i.s');
         return view('addimg', compact('imgName'));
     }
 
@@ -232,21 +231,20 @@ class HomeController extends Controller
                 ->where('user_id', '=', $user->id)
                 ->orderBy('datetime', 'desc')
                 ->get()[0];
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             $testResult = null;
         }
         // получим вопросы и варианты ответов  к ним
         $questions_with_answers = DB::table('test2_questions')
             ->where('test_id', '=', $test->id)
             //  вторая присоединяемая таблица,  поле id из первой таблицы,     =            поле question_id из второй таблицы
-            ->join('test3_answers', 'test2_questions.id', '=', 'test3_answers.question_id' )
+            ->join('test3_answers', 'test2_questions.id', '=', 'test3_answers.question_id')
             ->select('test2_questions.name as question', 'test3_answers.id as answer_id', 'test3_answers.name as answer', 'test3_answers.is_valid')
             ->get();
         // сформируем двухуровневый массив, где первый уровень - вопрос, второй уровень - ответы к нему
         $questions = [];
         foreach ($questions_with_answers as $q_a) {
-            $questions[$q_a->question][$q_a->answer_id]= ['answer' => $q_a->answer, 'is_valid' => $q_a->is_valid];
+            $questions[$q_a->question][$q_a->answer_id] = ['answer' => $q_a->answer, 'is_valid' => $q_a->is_valid];
         }
         $this->mylog('info', 'Зашел на страницу прохождения теста: /' . $sectionURL . '/' . $lessonURL . '/' . $testURL);
         return view('testpage', compact('sections', 'sectionURL', 'lesson', 'test', 'questions', 'user', 'role', 'testResult'));
@@ -284,11 +282,11 @@ class HomeController extends Controller
                     ]);
         } catch (\Exception $e) {
             return redirect('/cabinet#map')
-                ->with('error', 'Произошла ошибка при попытке пометить тест ['.$test->name.'] удалённым. ' . $e->getMessage());
+                ->with('error', 'Произошла ошибка при попытке пометить тест [' . $test->name . '] удалённым. ' . $e->getMessage());
         }
         $this->mylog('warning', 'Пометил тест: ' . $sectionURL . '/' . $lessonURL . '/' . $testURL . ' удаленным!');
         return redirect('/cabinet#map')
-            ->with('message', 'Тест ['.$test->name.'] удалён, но не до конца. Вы можете восстановить его или добить окончательно в личном кабинете.');
+            ->with('message', 'Тест [' . $test->name . '] удалён, но не до конца. Вы можете восстановить его или добить окончательно в личном кабинете.');
     }
 
     // Ставит пометку is_deleted как null
@@ -306,12 +304,12 @@ class HomeController extends Controller
                         'is_deleted' => null, // восстановлено
                     ]);
         } catch (\Exception $e) {
-            return redirect('/'.$sectionURL.'/'.$lessonURL.'/'.$testURL)
-                ->with('error', 'Произошла ошибка при восстановлении теста ['.$test->name.']. ' . $e->getMessage());
+            return redirect('/' . $sectionURL . '/' . $lessonURL . '/' . $testURL)
+                ->with('error', 'Произошла ошибка при восстановлении теста [' . $test->name . ']. ' . $e->getMessage());
         }
         $this->mylog('warning', 'Восстановил тест: ' . $sectionURL . '/' . $lessonURL . '/' . $testURL . '');
         return redirect('/cabinet#map')
-            ->with('message', 'Тест ['.$test->name.'] успешно восстановлен!');
+            ->with('message', 'Тест [' . $test->name . '] успешно восстановлен!');
     }
 
     // удаление теста из БД
@@ -324,9 +322,8 @@ class HomeController extends Controller
         $test = $this->getTest($testURL);
         // УДАЛЯЯ ВОПРОС - УДАЛЯЕМ ВСЕ ЕГО РЕЗУЛЬТАТЫ
         try {
-            DB::table('test4_results')->where('test_id','=', $test->id)->delete();
-        }
-        catch (\Exception $e) {
+            DB::table('test4_results')->where('test_id', '=', $test->id)->delete();
+        } catch (\Exception $e) {
             echo 'Не удалось удалить результат прохождения теста'; // ну не удалось, так не удалось. не критично
         }
         // получим все вопросы
@@ -361,12 +358,11 @@ class HomeController extends Controller
                 DB::table('test2_questions')->where('id', '=', $questionID)->delete();
             }
             DB::table('test1_tests')->where('id', '=', $test->id)->delete();
-        }
-        catch (\Exception $e) {
-            return redirect()->back()->with('error', 'При удалении теста ['.$test->name.'] из БД произошла ошибка. ' . $e->getMessage());
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'При удалении теста [' . $test->name . '] из БД произошла ошибка. ' . $e->getMessage());
         }
         $this->mylog('alert', 'Удалил тест: ' . $sectionURL . '/' . $lessonURL . '/' . $testURL . ' навсегда!');
-        return redirect('/cabinet#map')->with('message', 'Тест ['.$test->name.'] успешно уничтожен!');
+        return redirect('/cabinet#map')->with('message', 'Тест [' . $test->name . '] успешно уничтожен!');
     }
 
     // редактирование теста
@@ -383,32 +379,33 @@ class HomeController extends Controller
         $questions_with_answers = DB::table('test2_questions')
             ->where('test_id', '=', $test->id)
             //  вторая присоединяемая таблица,  поле id из первой таблицы,     =            поле question_id из второй таблицы
-            ->join('test3_answers', 'test2_questions.id', '=', 'test3_answers.question_id' )
+            ->join('test3_answers', 'test2_questions.id', '=', 'test3_answers.question_id')
             ->select('test2_questions.name as question', 'test3_answers.id as answer_id', 'test3_answers.name as answer', 'test3_answers.is_valid')
             ->get();
         // сформируем двухуровневый массив, где первый уровень - вопрос, второй уровень - ответы к нему
         $questions = [];
         foreach ($questions_with_answers as $q_a) {
-            $questions[$q_a->question][$q_a->answer_id]= ['answer' => $q_a->answer, 'is_valid' => $q_a->is_valid];
+            $questions[$q_a->question][$q_a->answer_id] = ['answer' => $q_a->answer, 'is_valid' => $q_a->is_valid];
         }
         // подготовим список всех уроков
         $section = $this->getSection($sectionURL);
         $lessons = DB::table('lessons')->select('id', 'name')->get();
         $this->mylog('warning', 'Зашел на страницу редактирования теста: /' . $sectionURL . '/' . $lessonURL . '/' . $testURL . '');
-        return view('edittest', compact( 'lessons','sectionURL', 'lesson', 'test', 'questions'));
+        return view('edittest', compact('lessons', 'sectionURL', 'lesson', 'test', 'questions'));
     }
 
     // Страница личного кабинета
-    public function cabinetPage() {
+    public function cabinetPage()
+    {
         // получим пользователя и его роль
         $user = Auth::user();
         $role = $this->getRole($user);
         // если не войден или неподтвержден - редирект с ошибкой
-        if(!Auth::check() || $role == null || $role->name == 'Неподтверждённый') {
+        if (!Auth::check() || $role == null || $role->name == 'Неподтверждённый') {
             return redirect('/main')->with('error', 'Личный кабинет не доступен. Войдите в систему и подтвердите свою учётную запись.');
         }
         // если админ - подготовим всё для админа
-        if($role->name == "Администратор") {
+        if ($role->name == "Администратор") {
 
             // для верхнего меню
             $sections = $this->getSections();
@@ -422,22 +419,22 @@ class HomeController extends Controller
             $users = [];
             // так как orderBy работает через одно место - сформируем массив вручную!
             foreach ($users_tmp as $user_tmp) {
-                if ($user_tmp->class_name == 'Учителя') $users ['Учителя'] []= $user_tmp;
+                if ($user_tmp->class_name == 'Учителя') $users ['Учителя'] [] = $user_tmp;
             }
             foreach ($users_tmp as $user_tmp) {
-                if ($user_tmp->class_name == '7 класс') $users ['7 класс'] []= $user_tmp;
+                if ($user_tmp->class_name == '7 класс') $users ['7 класс'] [] = $user_tmp;
             }
             foreach ($users_tmp as $user_tmp) {
-                if ($user_tmp->class_name == '8 класс') $users ['8 класс'] []= $user_tmp;
+                if ($user_tmp->class_name == '8 класс') $users ['8 класс'] [] = $user_tmp;
             }
             foreach ($users_tmp as $user_tmp) {
-                if ($user_tmp->class_name == '9 класс') $users ['9 класс'] []= $user_tmp;
+                if ($user_tmp->class_name == '9 класс') $users ['9 класс'] [] = $user_tmp;
             }
             foreach ($users_tmp as $user_tmp) {
-                if ($user_tmp->class_name == '10 класс') $users ['10 класс'] []= $user_tmp;
+                if ($user_tmp->class_name == '10 класс') $users ['10 класс'] [] = $user_tmp;
             }
             foreach ($users_tmp as $user_tmp) {
-                if ($user_tmp->class_name == '11 класс') $users ['11 класс'] []= $user_tmp;
+                if ($user_tmp->class_name == '11 класс') $users ['11 класс'] [] = $user_tmp;
             }
             // Список всех ролей (чтобы пользователю можно было переназначить роль)
             $roles = DB::table('user_roles')
@@ -458,11 +455,11 @@ class HomeController extends Controller
                         ->where('lesson_id', '=', $lesson->id)
                         ->orderBy('is_deleted', 'asc')
                         ->get();
-                    $lessons[$section->name][]= [
-                        'name'=>$lesson->name,
+                    $lessons[$section->name][] = [
+                        'name' => $lesson->name,
                         'section_url' => $section->url,
                         'url' => $lesson->url,
-                        'full_url'=> $lesson->full_url,
+                        'full_url' => $lesson->full_url,
                         'is_deleted' => $lesson->is_deleted,
                         'id' => $lesson->id,
                         'tests' => $tests
@@ -505,13 +502,13 @@ class HomeController extends Controller
                 ->get();
             //dump('Зашел админ!', $user->name, $role);
             $this->mylog('info', 'Зашел в личный кабинет администратора');
-            return view('cabinet', compact( 'sections','user', 'users', 'role', 'roles', 'lessons', 'testResultsByTests', 'testResultsByUsers', 'deletedLessons', 'deletedTests'));
+            return view('cabinet', compact('sections', 'user', 'users', 'role', 'roles', 'lessons', 'testResultsByTests', 'testResultsByUsers', 'deletedLessons', 'deletedTests'));
         }
 
 
 // -----------------------------------------------ЛИЧНЫЙ КАБИНЕТ УЧЕНИКА -----------------------
         // ну а тут подготовим для ученика кабинет
-        if($role->name == "Ученик") {
+        if ($role->name == "Ученик") {
             // для верхнего меню
             $sections = $this->getSections();
             // соберем результаты тестов для этого пользователя
@@ -533,7 +530,7 @@ class HomeController extends Controller
 
             //dd($testResults);
             $this->mylog('info', 'Зашел в личный кабинет ученика');
-            return view('cabinetschoolar', compact( 'sections','user', 'role', 'testResults'));
+            return view('cabinetschoolar', compact('sections', 'user', 'role', 'testResults'));
         }
     }
 }
