@@ -32,8 +32,10 @@ Route::get('/', function () {
 Route::get('/test', 'HomeController@testPage');
 Route::get('/test2', 'HomeController@testPage2');
 
-// генерация аватарки
-Route::get('/avatar_generator.php', 'Controller@avatarGenerate');
+//// генерация аватарки
+//Route::get('/avatar_generator.png', 'Controller@avatarGenerate');
+//// страница получения сгенерированной аватарки
+//Route::view('/avatar_generator', 'getavatargenerated');
 
 // редактирование личных данных ученика
 Route::post('/change_user_info.php', 'PostController@changeUserInfoPOST');
