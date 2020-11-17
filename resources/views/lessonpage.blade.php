@@ -76,7 +76,8 @@
                 @foreach ($comments as $comment)
                     <div class="media-block">
                         <a class="media-left" href="#">
-                            <img class="img-circle img-sm" src="{{$comment->avatar_src}}" width="40px">
+                            <img class="img-circle img-sm" name="avatar_image[]" src="{{$comment->avatar_src}}"
+                                 onerror="this.src = '/storage/img/AVATAR_ZAYAC.png'">
                         </a>
                         <div class="media-body">
 
@@ -115,13 +116,10 @@
                     <div class="alert alert-warning" role="alert">
                         Только зарегистрированные и подтверждённые ученики могут писать комментарии.
                     </div>
-                @endif
+            @endif
 
 
-                <!--===================================================-->
-
-
-
+            <!--===================================================-->
 
 
                 <br>
