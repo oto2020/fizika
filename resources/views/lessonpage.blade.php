@@ -70,13 +70,9 @@
                 <hr>
                 <br>
                 <h3>
-                    Комментарии к уроку [в разработке]:
+                    Комментарии к уроку:
                 </h3>
                 <br>
-
-
-                <!--===================================================-->
-
                 @foreach ($comments as $comment)
                     <div class="media-block">
                         <a class="media-left" href="#">
@@ -94,28 +90,40 @@
                         </div>
                     </div>
                 @endforeach
+                @if ($role!==null && $role->level > 10)
+                    <div class="col-md-12">
+                        <div class="panel">
+                            <div style="width:100%">
+                                <form method="post" action="/add_comment">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <input type="hidden" name="user_id" value="{{$user->id}}">
+                                    <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
+                                    <input name="content" type="text" class="form-control"
+                                           placeholder="Добавьте Ваш комментарий">
 
+                                    <div class="mar-top clearfix">
+                                        <button class="btn btn-sm btn-outline-dark" type="submit"
+                                                style="width:160px; float:right; margin-top:10px"> Добавить
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
 
-                <div class="col-md-12">
-                    <div class="panel">
-                        <div style="width:100%">
-                            <form method="post" action="/add_comment">
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <input type="hidden" name="user_id" value="{{$user->id}}">
-                                <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
-                                <input name="content" type="text" class="form-control"
-                                       placeholder="Добавьте Ваш комментарий">
-
-                                <div class="mar-top clearfix">
-                                    <button class="btn btn-sm btn-outline-dark" type="submit"
-                                            style="width:160px; float:right; margin-top:10px"> Добавить
-                                    </button>
-                                </div>
-                            </form>
                         </div>
-
                     </div>
-                </div>
+                @else
+                    <div class="alert alert-warning" role="alert">
+                        Только зарегистрированные и подтверждённые ученики могут писать комментарии.
+                    </div>
+                @endif
+
+
+                <!--===================================================-->
+
+
+
+
+
                 <br>
                 <br>
 

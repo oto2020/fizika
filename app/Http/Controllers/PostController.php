@@ -693,7 +693,6 @@ class PostController extends Controller
     // Добавление комментария со страницы урока
     public function addComment (Request $request)
     {
-        dump($request->toArray());
         try {
             DB::table('lesson_comments')->insert(
                 [
@@ -703,6 +702,7 @@ class PostController extends Controller
                     'datetime' => now()
                 ]
             );
+            $this->mylog('info', 'Оставил комментарий на странице с id: ' . $request->get('lesson_id'));
             return back()->with('message', 'Комментарий добавлен');
         } catch (\Exception $e) {
             return back()->with('error', 'Не удалось оставить комментарий. ' . $e->getMessage());
