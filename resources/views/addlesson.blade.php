@@ -61,28 +61,6 @@
                 </form>
 
                 <br>
-<xmp>
-<!-- В начале содержимого подключаем KATEX !-->
-<link href="/katex/katex.css" rel="stylesheet" type="text/css" />
-<script src="/katex/katex.js" type="text/javascript" ></script>
-
-<!--  СОДЕРЖИМОЕ СТРАНИЦЫ   !-->
-<p>Пример формулы 1:</p>
-<div class="math">f(x) = \sqrt{1+x} \quad (x \ge -1)</div>
-
-<p>Пример формулы 2:</p>
-<div class="math">f(x) = \sqrt{1+x}, \quad x \ge -1</div>
-<!--  СОДЕРЖИМОЕ СТРАНИЦЫ   !-->
-
-
-<!-- Находим все элементы с именем класса "math" и обрабатываем LaTex содержимое: !-->
-<script>
-    var mathElements = document.getElementsByClassName('math');
-    for(var i = 0; i < mathElements.length; i++) {
-        katex.render(mathElements[i].innerText, mathElements[i]);
-    }
-</script>
-</xmp>
             </div>
         </div>
         <!-- КОНЕЦ Содержимого страницы!-->
