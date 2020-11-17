@@ -57,6 +57,7 @@
                 <a href="/add_img" target="_blank">Добавить картинку</a>
                 <textarea name="html_content" id="html_content" class="form-control">{{$lesson->content}}</textarea>
                 <script>
+                    CKEDITOR.config.allowedContent = true;
                     CKEDITOR.replace( 'html_content', {height: 600});
                 </script>
             </div>
