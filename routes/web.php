@@ -33,7 +33,7 @@ Route::get('/test', 'HomeController@testPage');
 Route::get('/test2', 'HomeController@testPage2');
 
 //// генерация аватарки
-//Route::get('/avatar_generator.png', 'Controller@avatarGenerate');
+//Route::get('/avatar_generator.php', 'Controller@avatarGenerate');
 //// страница получения сгенерированной аватарки
 //Route::view('/avatar_generator', 'getavatargenerated');
 
