@@ -128,6 +128,9 @@ body {
      width: 46px;
      height: 46px;
  }
+ .img-circle{
+     border-radius: 50px;
+ }
 .media-block .media-left {
     display: block;
     float: left

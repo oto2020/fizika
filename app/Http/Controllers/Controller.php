@@ -160,8 +160,8 @@ class Controller extends BaseController
                 ->join('users', 'lesson_comments.user_id', '=', 'users.id')
                 ->select('lesson_comments.user_id as user_id',
                     'lesson_comments.lesson_id as lesson_id',
-                    'lesson_comments.content as comment_content',
-                    'lesson_comments.datetime as comment_datetime',
+                    'lesson_comments.content as content',
+                    'lesson_comments.datetime as datetime',
                     'users.name as user_name',
                     'users.class_name as user_class_name',
                     'users.created_at as user_created_at',

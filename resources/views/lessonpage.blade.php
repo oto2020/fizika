@@ -65,7 +65,7 @@
                             <a href="{{$lesson->full_url}}/add_test/">[добавить тест]</a>
                         </li>
                     </ul>
-            @endif
+                @endif
             <!-- Тесты !-->
                 <hr>
                 <br>
@@ -73,8 +73,6 @@
                     Комментарии к уроку [в разработке]:
                 </h3>
                 <br>
-
-
 
 
                 <!--===================================================-->
@@ -87,80 +85,39 @@
                         <div class="media-body">
 
                             <div class="mar-btm">
-                                <a href="#" class="btn-link text-semibold media-heading box-inline">{{$comment->user_name}}</a>
-                                <p class="text-muted text-sm"> {{$comment->comment_datetime}}</p>
+                                <a href="#"
+                                   class="btn-link text-semibold media-heading box-inline">{{$comment->user_name}}</a>
+                                <p class="text-muted text-sm"> {{$comment->datetime}}</p>
                             </div>
-                            <p>{{$comment->comment_content}}</p>
+                            <p>{{$comment->content}}</p>
                             <hr>
                         </div>
                     </div>
                 @endforeach
 
-{{--                <div class="media-block">--}}
-{{--                    <a class="media-left" href="#">--}}
-{{--                        <img class="img-circle img-sm" src="https://ui-avatars.com/api/?size=190&name=Максим+Смирнов&font-size=0.45&background=87cefa&color=fff&rounded=false" width="40px">--}}
-{{--                    </a>--}}
-{{--                    <div class="media-body">--}}
 
-{{--                        <div class="mar-btm">--}}
-{{--                            <a href="#" class="btn-link text-semibold media-heading box-inline">Максим Смирнов</a>--}}
-{{--                            <p class="text-muted text-sm"> 15:35 - 19-06-2016</p>--}}
-{{--                        </div>--}}
-{{--                        <p>Всем привет, это мой самый первый комментарий, пока что он статичен для всех страниц сайта.</p>--}}
-{{--                        <hr>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-
-{{--                <div class="media-block">--}}
-{{--                    <a class="media-left" href="#">--}}
-{{--                        <img class="img-circle img-sm" src="https://ui-avatars.com/api/?size=190&name=Николай+Прусикин&font-size=0.45&background=ffa07a&color=fff&rounded=false" width="40px">--}}
-{{--                    </a>--}}
-{{--                    <div class="media-body">--}}
-
-{{--                        <div class="mar-btm">--}}
-{{--                            <a href="#" class="btn-link text-semibold media-heading box-inline">Николай Прусикин</a>--}}
-{{--                            <p class="text-muted text-sm"> 18:39 - 19-06-2016</p>--}}
-{{--                        </div>--}}
-{{--                        <p>Секция с комментариями для сайта с подключенным Bootstrap!!!</p>--}}
-{{--                        <hr>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-                <!--===================================================-->
                 <div class="col-md-12">
                     <div class="panel">
                         <div style="width:100%">
-                            <textarea class="form-control" rows="2" placeholder="Добавьте Ваш комментарий" ></textarea>
-                            <div class="mar-top clearfix">
-                                <button class="btn btn-sm btn-outline-dark" type="submit" style="width:160px; float:right; margin-top:10px"> Добавить </button>
-                            </div>
+                            <form method="post" action="/add_comment">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="user_id" value="{{$user->id}}">
+                                <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
+                                <input name="content" type="text" class="form-control"
+                                       placeholder="Добавьте Ваш комментарий">
+
+                                <div class="mar-top clearfix">
+                                    <button class="btn btn-sm btn-outline-dark" type="submit"
+                                            style="width:160px; float:right; margin-top:10px"> Добавить
+                                    </button>
+                                </div>
+                            </form>
                         </div>
+
                     </div>
                 </div>
                 <br>
                 <br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
             </div>

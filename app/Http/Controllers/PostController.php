@@ -685,10 +685,30 @@ class PostController extends Controller
         try {
             $this->generateSaveAvatar($request->userId, $request->userName);
         } catch (\Exception $e) {
-            return redirect($last_page)->with('error', 'Не удалось обновить аватарку. ');
-            $e->getMessage();
+            return redirect($last_page)->with('error', 'Не удалось обновить аватарку. ' . $e->getMessage());
         }
         return redirect($last_page)->with('message', 'Аватарка обновлена. Если изменения не заметны нажмите Ctrl+F5');
+    }
+
+    // Добавление комментария со страницы урока
+    public function addComment (Request $request)
+    {
+        dump($request->toArray());
+        try {
+            DB::table('lesson_comments')->insert(
+                [
+                    'user_id' => $request->get('user_id'),
+                    'lesson_id' => $request->get('lesson_id'),
+                    'content' => $request->get('content'),
+                    'datetime' => now()
+                ]
+            );
+            return back()->with('message', 'Комментарий добавлен');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Не удалось оставить комментарий. ' . $e->getMessage());
+        }
+
+
     }
 }
 

@@ -37,6 +37,9 @@ Route::get('/test2', 'HomeController@testPage2');
 //// страница получения сгенерированной аватарки
 //Route::view('/avatar_generator', 'getavatargenerated');
 
+// добавление комментария
+Route::post('/add_comment', 'PostController@addComment');
+
 // редактирование личных данных ученика
 Route::post('/change_user_info.php', 'PostController@changeUserInfoPOST');
 
