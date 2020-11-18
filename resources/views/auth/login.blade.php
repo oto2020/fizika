@@ -63,7 +63,7 @@
                             <div class="col-md-4 col-form-label text-md-right"></div>
                             <div class="col-md-6">
                                 <button type="submit" class="btn btn-secondary btn-block">
-                                    ВОЙТИ НА САЙТ
+                                    ВОЙТИ
                                 </button>
                             </div>
                         </div>

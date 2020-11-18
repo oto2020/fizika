@@ -11,7 +11,7 @@
             <span class="input-group-addon"></span>
             <input name="password" type="password" class="form-control" placeholder="Ваш суперпароль">
         </div>
-        <button class="btn btn-secondary btn-block" type="submit">ВОЙТИ НА САЙТ</button>
+        <button class="btn btn-secondary btn-block" type="submit">ВОЙТИ</button>
     </form>
     <div class="login-links">
         <p class="text-center">Нет аккаунта? <a class="txt-brand" href="/register"><font color="#29aafe">Регистрируйся</font></a></p>
