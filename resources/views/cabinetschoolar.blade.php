@@ -16,15 +16,15 @@
         <!--ВЕРХНЕЕ МЕНЮ!-->
     @include('layouts.top.menu')
     <!--ВСЁ, ЧТО ПОСЛЕ ВЕРХНЕГО МЕНЮ!-->
-        <div class="row">
+        <div class="row row-full-width">
             <!-- ЛЕВОЕ МЕНЮ !-->
-            <div class="col-2">
+            <div class="col-xs-12 col-sm-2">
                 @include('layouts.left.auth')
             </div>
             <!-- КОНЕЦ ЛЕВОГО МЕНЮ!-->
 
             <!--Содержимое страницы!-->
-            <div class="col-10">
+            <div class="col-xs-12 col-sm-10" style="padding-left: 25px;">
                 <p>
                 <h1>Личный кабинет</h1>
                 </p>
@@ -51,7 +51,7 @@
                 <hr>
                 <h2>Результаты ваших тестов:</h2>
                 <br>
-                <table class="table table-striped table-inverse">
+                <table class="table table-striped table-inverse big-table">
                     <thead>
 {{--                    <th>#</th>--}}
                     <th style="width:400px">Название теста</th>

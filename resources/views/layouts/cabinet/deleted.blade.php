@@ -2,7 +2,7 @@
     @include('layouts.messages.message')
     <h2>Удаленные уроки:</h2>
     <?php //dump($deletedLessons);?>
-    <table class="table table-striped table-inverse">
+    <table class="table table-striped table-inverse big-table">
         <thead>
         <th>#</th>
         <th style="width:300px">Название урока</th>
@@ -33,7 +33,7 @@
 
     <h2>Удаленные тесты:</h2>
     <?php //dump($deletedTests);?>
-    <table class="table table-striped table-inverse">
+    <table class="table table-striped table-inverse big-table">
         <thead>
         <th>#</th>
         <th style="width:300px">Название теста</th>

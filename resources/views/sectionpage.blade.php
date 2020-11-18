@@ -17,16 +17,16 @@
     <!--ВЕРХНЕЕ МЕНЮ!-->
             @include('layouts.top.menu')
     <!--ВСЁ, ЧТО ПОСЛЕ ВЕРХНЕГО МЕНЮ!-->
-                <div class="row">
+                <div class="row row-full-width">
                     <!-- ЛЕВОЕ МЕНЮ !-->
-                    <div class="col-2">
+                    <div class="col-xs-12 col-sm-2">
                         @include('layouts.left.auth')
                         @include('layouts.left.menu')
                     </div>
                     <!-- КОНЕЦ ЛЕВОГО МЕНЮ!-->
 
                     <!--Содержимое страницы!-->
-                    <div class="col-10">
+                    <div class="col-xs-12 col-sm-10" style="padding-left: 25px;">
                         @if($section->url=='main')
                             На главной странице будет что-то другое, кроме списка уроков.
                         @elseif(count($lessons)==0)

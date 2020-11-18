@@ -30,7 +30,7 @@
         <!--ВЕРХНЕЕ МЕНЮ!-->
     @include('layouts.top.menu')
     <!--ВСЁ, ЧТО ПОСЛЕ ВЕРХНЕГО МЕНЮ!-->
-        <div class="row">
+        <div class="row row-full-width">
             <!--Содержимое страницы!-->
             <div class="col-12">
                 <p>

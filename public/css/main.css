@@ -2,21 +2,26 @@
     margin: 0;
     padding: 0;
 }
+
 html,
 body {
     height: 100%;
 }
+
 .wrapper {
     position: relative;
     min-height: 100%;
 }
+
 .content {
     padding-bottom: 90px;
 }
+
 .container {
-    max-width:none;
-    width:80%;
+    max-width: none;
+    width: 80%;
 }
+
 .footer {
     position: absolute;
     padding: 0.75rem 1.25rem;
@@ -30,16 +35,15 @@ body {
 }
 
 
-@media screen and (max-width: 1366px){
+@media screen and (max-width: 1366px) {
     .content {
         width: 100%;
     }
+
     .footer {
         width: 100%;
     }
 }
-
-
 
 
 /*.tooltip {*/
@@ -124,38 +128,76 @@ body {
 /*}*/
 
 /*Блок комментариев*/
- .img-sm {
-     width: 46px;
-     height: 46px;
- }
- .img-circle{
-     border-radius: 50px;
- }
+.img-sm {
+    width: 46px;
+    height: 46px;
+}
+
+.img-circle {
+    border-radius: 50px;
+}
+
 .media-block .media-left {
     display: block;
     float: left
 }
+
 .media-block .media-right {
     float: right
 }
+
 .media-block .media-body {
     display: block;
     overflow: hidden;
     width: auto;
-    margin-left:60px;
+    margin-left: 60px;
 }
 
 /*аватарка в блоке auth*/
 .img-user-avatar-on-top-menu {
-    height:50px;
+    height: 50px;
     width: 50px;
     border-radius: 30px;
 }
 
 /*аватарка в таблице с пользователями в личном кабинете администратора cabinet*/
 .img-user-avatar-on-cabinet {
-    display:inline;
-    height:35px;
+    display: inline;
+    height: 35px;
     width: 35px;
     border-radius: 30px;
+}
+
+/*для больших таблиц а-ля редактирование пользователей*/
+.big-table {
+    min-width: 1000px;
+}
+
+/*для мобильной версии верхнего меню: три независимых колонки*/
+.top-menu-mobile-column-left {
+    float: left;
+    width: 33%;
+    text-align: center
+}
+
+.top-menu-mobile-column-right {
+    float: right;
+    width: 33%;
+    text-align: center
+}
+
+.top-menu-mobile-column-center {
+    display: inline-block;
+    width: 33%;
+    text-align: center
+}
+
+/*для того, чтобы бутстраповские строки были во всю ширину родительского элемента*/
+.row-full-width {
+    width: 100%;
+}
+
+/*для всех картинок: чтобы не превышали ширину страницы*/
+img {
+    width: 100%;
 }

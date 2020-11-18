@@ -29,9 +29,9 @@
                     </form>
                 </nav>
                 <!--ВСЁ, ЧТО ПОСЛЕ ВЕРХНЕГО МЕНЮ!-->
-                <div class="row">
+                <div class="row row-full-width">
                     <!-- ЛЕВОЕ МЕНЮ !-->
-                    <div class="col-2">
+                    <div class="col-xs-12 col-sm-2">
                         <br>
                         @include('layouts.left.auth')
                         <!--Навигационный бар в левом меню!-->
@@ -40,7 +40,7 @@
                     <!-- КОНЕЦ ЛЕВОГО МЕНЮ!-->
 
                     <!--Содержимое страницы!-->
-                    <div class="col-10">
+                    <div class="col-xs-12 col-sm-10" style="padding-left: 25px;">
                         <p>
                             <h1>
                                 {{$test->name}}
