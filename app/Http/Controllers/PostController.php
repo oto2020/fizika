@@ -28,7 +28,7 @@ class PostController extends Controller
         // Добавим onerror для latex-формул, которые рендерятся на стороннем сервисе
         $content = $request->html_content;
         // Выполняет поиск в строке subject совпадений с шаблоном pattern и заменяет их на replacement
-        $content = preg_replace ('/src="http:\/\/latex.codecogs.com/', ' onload="onErrorLoadLatexImg(this)" src="http://latex.codecogs.com', $content);
+        $content = preg_replace ('/src="http:\/\/latex.codecogs.com/', ' onload="onLoadLatexImg(this)" src="http://latex.codecogs.com', $content);
 
         $arrayToInsert = [
             'name' => $request->lesson_name,
@@ -63,7 +63,7 @@ class PostController extends Controller
         // Добавим onerror для latex-формул, которые рендерятся на стороннем сервисе
         $content = $request->html_content;
         // Выполняет поиск в строке subject совпадений с шаблоном pattern и заменяет их на replacement
-        $content = preg_replace ('/src="http:\/\/latex.codecogs.com/', ' onload="onErrorLoadLatexImg(this)" src="http://latex.codecogs.com', $content);
+        $content = preg_replace ('/src="http:\/\/latex.codecogs.com/', ' onload="onLoadLatexImg(this)" src="http://latex.codecogs.com', $content);
 
         // нужно помнить, что если мы переместим урок в другой раздел, то у урока и привязанных к нему тестах изменится full_url
         try {

@@ -10,8 +10,8 @@
     <link href="/katex/katex.css" rel="stylesheet" type="text/css"/>
     <script src="/katex/katex.js" type="text/javascript"></script>
     <script>
-        // в случае ошибки при загрузке изображения со стороннего ресурса -- включается в работу katex. Нужно лишь навесить событие onerror
-        function onErrorLoadLatexImg(img) {
+        // при загрузке изображения со стороннего ресурса -- включается в работу katex. Нужно лишь навесить событие и в качестве обработчика указать этот метод
+        function onLoadLatexImg(img) {
             // формируем динамически новый div
             var newDiv = document.createElement('div');
             // katex берет latex-код из img.alt и формирует наш новый div
