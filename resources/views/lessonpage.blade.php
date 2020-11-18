@@ -7,6 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="{{asset('/css/bootstrap.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('/css/main.css')}}" rel="stylesheet" type="text/css">
+    <link href="/katex/katex.css" rel="stylesheet" type="text/css"/>
+    <script src="/katex/katex.js" type="text/javascript"></script>
+    <script>
+        // в случае ошибки при загрузке изображения со стороннего ресурса -- включается в работу katex. Нужно лишь навесить событие onerror
+        function onErrorLoadLatexImg(img) {
+            // формируем динамически новый div
+            var newDiv = document.createElement('div');
+            // katex берет latex-код из img.alt и формирует наш новый div
+            katex.render(img.alt, newDiv);
+            // заменим img на div
+            img.parentElement.replaceChild(newDiv, img);
+        }
+    </script>
+
 </head>
 <body>
 <div class="wrapper">

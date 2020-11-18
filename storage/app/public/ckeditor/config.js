@@ -7,7 +7,6 @@
 //https://ckeditor.com/latest/samples/toolbarconfigurat..
 CKEDITOR.editorConfig = function( config ) {
     config.language = 'ru';
-    config.extraPlugins = 'eqneditor';
 //config.uiColor = '#AADC6E';
     config.toolbar = [
         { name: 'document', items: [ 'Source', '-', 'Preview', '-','Print', '-' ] },
@@ -17,7 +16,7 @@ CKEDITOR.editorConfig = function( config ) {
         { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat' ] },
         { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl'] },
         { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
-        { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'Smiley',  'SpecialChar', 'PageBreak', 'Iframe', 'Youtube', 'EqnEditor' ] },
+        { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'Smiley',  'SpecialChar', 'PageBreak', 'Iframe', 'Youtube', 'EqnEditor', 'addlatex' ] },
         '/',
         '/',
         { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
@@ -26,6 +25,7 @@ CKEDITOR.editorConfig = function( config ) {
         { name: 'about', items: [ 'About' ] }
     ];
     config.allowedContent = true;
+    config.extraPlugins = 'addlatex, eqneditor';
 };
 
 CKEDITOR.config.allowedContent = {
