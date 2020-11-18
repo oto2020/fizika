@@ -36,6 +36,14 @@ body {
 
 
 @media screen and (max-width: 1366px) {
+    .container {
+        width:100%;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .row-full-width{
+        padding-left: 15px;
+    }
     .content {
         width: 100%;
     }
@@ -199,5 +207,5 @@ body {
 
 /*для всех картинок: чтобы не превышали ширину страницы*/
 img {
-    width: 100%;
+    max-width: 100%;
 }

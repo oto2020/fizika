@@ -90,36 +90,70 @@
     </nav>
 </div>
 
-
 <!-- Мобильная версия !-->
-<div name="layouts.top.menu-mobile" id="top_menu_mobile">
-    <div style="height: 60px;">
-        @if ($role != null)
-            <div class="top-menu-mobile-column-left">
-                <img class="img-user-avatar-on-top-menu" src="{{$user->avatar_src}}">
-                Кабинет
-            </div>
-        @endif
-        <div class="top-menu-mobile-column-center">
-            Меню
+<div name="layouts.top.menu-mobile" id="top_menu_mobile" style="align-items: center;">
+    <!-- Верхнее меню: три иконки!-->
+    <div style="width: 100%; height: 60px; padding-top: 4px; padding-bottom: 10px; background-color: #343a40;">
+        <!-- КНОПКА МЕНЮ !-->
+        <div id="top-menu-mobile-button" class="top-menu-mobile-column-left">
+            <img class="img-user-avatar-on-top-menu" src="/storage/img/MENU_1.png">
         </div>
-        @if ($role != null)
+    @if ($role != null)
+        <!-- АВАТАР ПОЛЬЗОВАТЕЛЯ !-->
+            <div class="top-menu-mobile-column-center">
+                <a href="/cabinet">
+                    <img class="img-user-avatar-on-top-menu" src="{{$user->avatar_src}}">
+                </a>
+            </div>
+            <!-- ВЫХОД !-->
             <div class="top-menu-mobile-column-right">
                 <a href="/logout" onclick="return confirm ('Точно выйти?')">
-                    <img id="img_exit" style="width:50px" src="/storage/img/exit_button_1.png">
+                    <img id="img_exit" style="width:60px" src="/storage/img/exit_button_1.png">
                 </a>
-                Выход
             </div>
         @endif
     </div>
+    <!-- Верхнее меню: список !-->
+    <div id="top-menu-navbar" style="display:none;">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <ul class="navbar-nav mr-auto" style="width: 100%;  background-color: #343a40;">
+                @foreach($sections as $s)
+                    <hr style="margin-top: 2px; margin-bottom: 2px;">
+                    <li class="nav-item {{isset($section) && $section->url == $s->url?'active':''}}"
+                        style="text-align: center;">
+                        <a class="nav-link" href="/{{$s->url}}">{{$s->name}} </a>
+                    </li>
+                @endforeach
+            </ul>
+        </nav>
+    </div>
+    <script>
+        // кнопка меню, при нажатии на которую меню будет разворачиваться/сворачиваться
+        var menuButton = document.getElementById('top-menu-mobile-button');
+        // объект сворачивания-разворачивания
+        var navBar = document.getElementById('top-menu-navbar');
+        // будет помнить состояние (свернуто/развернутно)
+        var isNavBarDisplayed = false;
+        // навешиваем событие нажатия
+        menuButton.addEventListener('mouseup', e => {
+            if (!isNavBarDisplayed)
+                navBar.style.display = "inline";
+            if (isNavBarDisplayed)
+                navBar.style.display = "none";
+            isNavBarDisplayed = !isNavBarDisplayed;
+        });
+    </script>
 </div>
 
 <script>
     // займемся переключением десктопной и мобильной версии меню
     var desktopMenu = document.getElementById('top_menu_desktop');
     var mobileMenu = document.getElementById('top_menu_mobile');
-    if (isMobile) desktopMenu.remove();
-    else mobileMenu.remove();
+
+    if (isMobile)
+        desktopMenu.remove();
+    else
+        mobileMenu.remove();
 </script>
 
 
