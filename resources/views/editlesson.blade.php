@@ -8,7 +8,6 @@
     <link href="{{asset('/css/bootstrap.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('/css/main.css')}}" rel="stylesheet" type="text/css">
     <script src="/storage/ckeditor/ckeditor.js"></script>
-
 </head>
 <body>
 @include('layouts.messages.message')
