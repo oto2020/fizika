@@ -3,36 +3,40 @@
     padding: 0;
 }
 
-html,
-body {
+html, body {
     height: 100%;
 }
 
-.wrapper {
-    position: relative;
-    min-height: 100%;
+.push {
+    height: 80px; /* .push must be the same height as .footer */
 }
 
+.footer {
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+    height: 80px;
+    text-align: center;
+}
+
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -80px;
+}
+
+
 .content {
-    padding-bottom: 90px;
 }
 
 .container {
     max-width: none;
-    width: 80%;
+    width: 94%;
 }
 
-.footer {
-    position: absolute;
-    padding: 0.75rem 1.25rem;
-    background-color: rgba(0, 0, 0, 0.03);
-    border-top: 1px solid rgba(0, 0, 0, 0.125);
-    bottom: 0;
-    display: block;
-    box-sizing: border-box;
-    height: 80px;
-    text-align: center;
-}
+
 
 
 @media screen and (max-width: 1366px) {
@@ -41,7 +45,7 @@ body {
         padding-left: 0px;
         padding-right: 0px;
     }
-    .row-full-width{
+    .row {
         padding-left: 15px;
     }
     .content {
@@ -201,7 +205,7 @@ body {
 }
 
 /*для того, чтобы бутстраповские строки были во всю ширину родительского элемента*/
-.row-full-width {
+.row {
     width: 100%;
 }
 
