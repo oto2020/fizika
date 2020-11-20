@@ -54,7 +54,12 @@
                     <br>
                 @endif
             <!-- КОНТЕНТ СТРАНИЦЫ ИБ БД!-->
-                {!!$lesson->content!!}
+                <div id="app">
+                    <example-component></example-component>
+                </div>
+                <div id="onlyLessonPageContentCSS">
+                    {!!$lesson->content!!}
+                </div>
                 <br>
                 <h6>Дата добавления урока: {{$lesson->date}} | Автор урока: {{$lesson->user}}</h6>
                 </p>
@@ -148,5 +153,6 @@
         <footer class="footer container">КФУ им. В.И. Вернадского, Симферополь, 2020</footer>
     </div>
 </div>
+<script src="/js/app.js"></script>
 </body>
 </html>
