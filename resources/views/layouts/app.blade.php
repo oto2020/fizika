@@ -8,7 +8,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Title -->
-    <title>ДИНАМИЧЕСКИ ИЗМЕНЯЕМЫЙ ТАЙТЛ </title>
+    <title>
+        @if(isset($title))
+            {{ $title }}
+        @else
+            Обучающий портал
+        @endif
+    </title>
 
     <!-- Icon -->
     <link rel="icon" href="/storage/img/icon_1.ico" type="image/x-icon">
