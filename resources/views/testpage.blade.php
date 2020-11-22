@@ -14,24 +14,11 @@
                 @include('layouts.messages.message')
                 <br>
                 <!--ВЕРХНЕЕ МЕНЮ!-->
-                <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                    <ul class="navbar-nav mr-auto">
-                        @foreach($sections as $s)
-                            <?php if($sectionURL==$s->url) $className = $s->name; // сохраним название класса, в котором находимся?>
-                            <li class="nav-item {{$sectionURL==$s->url?'active':''}}">
-                                <a class="nav-link" href="/{{$s->url}}">{{$s->name}} </a>
-                            </li>
-                        @endforeach
-                    </ul>
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Поиск" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
-                    </form>
-                </nav>
+                @include('layouts.top.menu')
                 <!--ВСЁ, ЧТО ПОСЛЕ ВЕРХНЕГО МЕНЮ!-->
-                <div class="row">
+                <div class="row row-full-width">
                     <!-- ЛЕВОЕ МЕНЮ !-->
-                    <div class="col-2">
+                    <div class="col-xs-12 col-sm-2">
                         <br>
                         @include('layouts.left.auth')
                         <!--Навигационный бар в левом меню!-->
@@ -40,7 +27,7 @@
                     <!-- КОНЕЦ ЛЕВОГО МЕНЮ!-->
 
                     <!--Содержимое страницы!-->
-                    <div class="col-10">
+                    <div class="col-xs-12 col-sm-10" style="padding-left: 25px;">
                         <p>
                             <h1>
                                 {{$test->name}}

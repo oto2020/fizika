@@ -6,7 +6,7 @@
             <h3>
                 {{$class_name}}:
             </h3>
-            <table class="table table-striped table-inverse">
+            <table class="table table-striped table-inverse big-table">
                 <!--Заголовок таблицы с пользователями !-->
                 <thead class="">
                 <tr>

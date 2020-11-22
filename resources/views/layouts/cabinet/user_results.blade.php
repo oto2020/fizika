@@ -8,7 +8,7 @@
         </h3>
         @if (count($results) > 0)
             <ul>
-                <table class="table table-striped table-inverse">
+                <table class="table table-striped table-inverse big-table">
                     <thead>
                     {{--                                        <th>#</th>--}}
                     <th style="width:300px">Название теста</th>

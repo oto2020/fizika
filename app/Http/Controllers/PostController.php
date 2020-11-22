@@ -24,6 +24,12 @@ class PostController extends Controller
     public function addLessonPOST(Request $request, $sectionURL)
     {
 //        $content = $this->remove4bytesCharFromUtf8Str($request->html_content);
+
+        // Добавим onerror для latex-формул, которые рендерятся на стороннем сервисе
+        $content = $request->html_content;
+        // Выполняет поиск в строке subject совпадений с шаблоном pattern и заменяет их на replacement
+        $content = preg_replace ('/src="http:\/\/latex.codecogs.com/', ' onload="onLoadLatexImg(this)" src="http://latex.codecogs.com', $content);
+
         $arrayToInsert = [
             'name' => $request->lesson_name,
             'date' => $request->date,
@@ -31,7 +37,7 @@ class PostController extends Controller
             'url' => $request->url,
             'full_url' => '/' . $sectionURL . '/' . $request->url,
             'section_id' => $request->section,
-            'content' => $request->html_content, //$content,
+            'content' => $content,
             'user' => $request->user,
             'is_deleted' => null,
         ];
@@ -53,6 +59,12 @@ class PostController extends Controller
         $lessonID = $request->id_from_database;
         $sectionID = $request->section;
         $section = DB::table('sections')->where('id', '=', $sectionID)->get()[0];
+
+        // Добавим onerror для latex-формул, которые рендерятся на стороннем сервисе
+        $content = $request->html_content;
+        // Выполняет поиск в строке subject совпадений с шаблоном pattern и заменяет их на replacement
+        $content = preg_replace ('/src="http:\/\/latex.codecogs.com/', ' onload="onLoadLatexImg(this)" src="http://latex.codecogs.com', $content);
+
         // нужно помнить, что если мы переместим урок в другой раздел, то у урока и привязанных к нему тестах изменится full_url
         try {
             // проведём апдейт записи в таблице
@@ -66,7 +78,7 @@ class PostController extends Controller
                         'url' => $request->url,
                         'full_url' => '/' . $section->url . '/' . $request->url,
                         'section_id' => $section->id,
-                        'content' => $request->html_content,
+                        'content' => $content,
                         'user' => $request->user,
                     ]);
         } catch (\Exception $e) {

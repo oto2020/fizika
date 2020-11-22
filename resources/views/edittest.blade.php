@@ -20,7 +20,7 @@
 
 <!--Содержимое страницы по ДОБАВЛЕНИЮ СТАТЬИ!-->
 <div class="form-row">
-    <div class="col-10">
+    <div class="col-xs-12 col-sm-10" style="padding-left: 25px;">
         <?php $counter = 1;?>
         <form name="test" method="post" action="/{{$test->url}}/edit_test.php">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">

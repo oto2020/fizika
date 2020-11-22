@@ -1,4 +1,4 @@
-<div name="layouts.left.menu">
+<div name="layouts.left.menu" style="min-width: 130px">
     <hr>
     <!--Уроки!-->
     @if(count($lessons) == 0)
@@ -10,13 +10,12 @@
             <ul class="navbar-nav mr-auto">
                 @foreach($lessons as $l)
                     <li class="nav-item active">
-                        <a class="nav-link" href="/{{$section->url}}/{{$l->url}}">Урок {{$counter}}
+                        <a class="nav-link" href="/{{$section->url}}/{{$l->url}}" >Урок {{$counter}}
                             . {{$l->name}} </a>
                     </li>
                     <?php $counter++;?>
                 @endforeach
             </ul>
-
         </nav>
     @endif
     @if ($role!==null && $role->name == 'Администратор')
