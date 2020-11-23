@@ -28,6 +28,9 @@ Route::get('/', function () {
     return redirect('/main');
 });
 
+// Главная страница
+Route::get('/main', 'HomeController@showMainPage');
+
 // Тестовая страница
 Route::get('/test', 'HomeController@testPage');
 Route::get('/test2', 'HomeController@testPage2');

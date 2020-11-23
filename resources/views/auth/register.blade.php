@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['title'=>'Регистрация'])
 
 @section('content')
 <div class="container">
@@ -13,7 +13,7 @@
                         <div class="form-group">
                             <?php // ну не свезло сделать в MVC, проблема с роутами при return view("auth.register", compact('sections'))
                             //TODO::перенести этот код в контроллер
-                                $sections = DB::table('sections')
+                                $classes = DB::table('sections')
                                     ->select('id','name', 'url', 'ico')
                                     ->orderBy('id', 'asc')
                                     ->get();
@@ -25,11 +25,8 @@
 
                             <div class="col-md-6">
                                 <select class="browser-default custom-select" name="class_name">
-                                    @foreach ($sections as $section)
-{{--                                        @if ($section->name!='Главная')--}}
-                                        @if (preg_match('/^([0-9]){1,2}(.){0,}/', $section->name))
-                                            <option {{(Session::get('register_class_name') == $section->name) ? 'selected' : ''}}>{{$section->name}}</option>
-                                        @endif
+                                    @foreach ($classes as $class)
+                                        <option {{(Session::get('register_class_name') == $class->name) ? 'selected' : ''}}>{{$class->name}}</option>
                                     @endforeach
                                 </select>
                             </div>

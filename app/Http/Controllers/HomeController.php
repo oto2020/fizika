@@ -43,6 +43,19 @@ class HomeController extends Controller
         return view('testtesttest2');
     }
 
+    // Главная страница
+    public function showMainPage()
+    {
+        // получим пользователя и его роль
+        $user = Auth::user();
+        $role = $this->getRole($user);
+
+        // ДЛЯ ВЕРХНЕГО МЕНЮ -- СПИСОК РАЗДЕЛОВ (ГЛАВНАЯ, 7 КЛАСС, 8 КЛАСС И ТД,)
+        $sections = $this->getSections();
+
+        return view('mainpage', compact('sections', 'user', 'role'));
+    }
+
     // страница с каким-либо разделом (Например: 7-class)
     public function showSectionPage($sectionURL) // где section - это url раздела
     {

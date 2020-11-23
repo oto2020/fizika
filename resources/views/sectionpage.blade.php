@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['title'=>$section->name])
 
 @section('content')
     <div class="row row-full-width">

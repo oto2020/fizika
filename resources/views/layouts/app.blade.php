@@ -12,7 +12,7 @@
         @if(isset($title))
             {{ $title }}
         @else
-            Обучающий портал
+            Обучающий портал по физике
         @endif
     </title>
 
