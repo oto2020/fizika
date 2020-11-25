@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('avatar_src');
             $table->foreignId('idUserRole')->references('id')->on('user_roles');
+            $table->foreignId('idSchool')->references('id')->on('schools');
             $table->string('name');
             $table->string('className');
             $table->string('email');
