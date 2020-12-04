@@ -1,0 +1,4 @@
+<p>бла бла бла hTML-контент<br />
+Ава пользователя:&nbsp;</p>
+
+<p><img alt="" src="/storage/img/AVATAR_ZAYAC.png" style="width: 603px; height: 652px;" /></p>
